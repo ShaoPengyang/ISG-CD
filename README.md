@@ -15,7 +15,7 @@ python main_our.py
 
 ### Mooc-radar
 The MOOC-Radar is too big to upload via Github. 
-if you want to run codes for mooc-radar, please first download the dataset from [link](https://cloud.tsinghua.edu.cn/d/5443ee05152344c79419/), and put the files into "data/coarse/".
+if you want to run codes for mooc-radar, please first download the dataset from [link](https://cloud.tsinghua.edu.cn/d/5443ee05152344c79419/), and put the files into "mooc-graph/data/coarse/" (Please mkdir first).
 Then, you should run
 ```
 cd mooc-graph/RCD
