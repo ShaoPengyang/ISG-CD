@@ -183,6 +183,9 @@ class our_adaptive(nn.Module):
 
         if not self.update:
             for _ in range(self.layer_depth):
+                '''
+                W_1 and W_0  to be eye matrix (eqaul no matrix) would be better on this dataset. 
+                '''
                 gcn1_users_embedding_1 = torch.sparse.mm(self.user_item_matrix_1, k_difficulty) + stat_emb.mul(self.d_i_train_1)
                 # gcn1_users_embedding_1 = self.W_1(gcn1_users_embedding_1)
                 gcn1_items_embedding_1 = torch.sparse.mm(self.item_user_matrix_1, stat_emb) + k_difficulty.mul(self.d_j_train_1)
