@@ -38,7 +38,7 @@ def train(args):
     net = our_adaptive(args, args.exer_n, args.student_n, args.knowledge_n, 128, 1, 0.05)
     net = net.to(device)
 
-    optimizer_net = optim.Adam(net.parameters(), lr=0.0002)
+    optimizer_net = optim.Adam(net.parameters(), lr=0.0001)
 
     # 18
     for epoch in range(100):
