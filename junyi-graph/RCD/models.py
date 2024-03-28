@@ -184,25 +184,25 @@ class our_adaptive(nn.Module):
         if not self.update:
             for _ in range(self.layer_depth):
                 gcn1_users_embedding_1 = torch.sparse.mm(self.user_item_matrix_1, k_difficulty) + stat_emb.mul(self.d_i_train_1)
-                gcn1_users_embedding_1 = self.W_1(gcn1_users_embedding_1)
+                # gcn1_users_embedding_1 = self.W_1(gcn1_users_embedding_1)
                 gcn1_items_embedding_1 = torch.sparse.mm(self.item_user_matrix_1, stat_emb) + k_difficulty.mul(self.d_j_train_1)
-                gcn1_items_embedding_1 = self.W_1(gcn1_items_embedding_1)
+                # gcn1_items_embedding_1 = self.W_1(gcn1_items_embedding_1)
                 gcn1_users_embedding_0 = torch.sparse.mm(self.user_item_matrix_0, k_difficulty) + stat_emb.mul(self.d_i_train_0)
-                gcn1_users_embedding_0 = self.W_0(gcn1_users_embedding_0)
+                # gcn1_users_embedding_0 = self.W_0(gcn1_users_embedding_0)
                 gcn1_items_embedding_0 = torch.sparse.mm(self.item_user_matrix_0, stat_emb) + k_difficulty.mul(self.d_j_train_0)
-                gcn1_items_embedding_0 = self.W_0(gcn1_items_embedding_0)
+                # gcn1_items_embedding_0 = self.W_0(gcn1_items_embedding_0)
                 stat_emb = gcn1_users_embedding_1 + gcn1_users_embedding_0
                 k_difficulty = gcn1_items_embedding_1 + gcn1_items_embedding_0
         else:
             for _ in range(self.layer_depth):
                 gcn1_users_embedding_postrue = torch.sparse.mm(self.user_item_matrix_postrue, k_difficulty) + stat_emb.mul(self.d_i_train_11)
-                gcn1_users_embedding_postrue = self.W_1(gcn1_users_embedding_postrue)
+                # gcn1_users_embedding_postrue = self.W_1(gcn1_users_embedding_postrue)
                 gcn1_items_embedding_postrue = torch.sparse.mm(self.item_user_matrix_postrue, stat_emb) + k_difficulty.mul(self.d_j_train_11)
-                gcn1_items_embedding_postrue = self.W_1(gcn1_items_embedding_postrue)
+                # gcn1_items_embedding_postrue = self.W_1(gcn1_items_embedding_postrue)
                 gcn1_users_embedding_negtrue = torch.sparse.mm(self.user_item_matrix_negtrue, k_difficulty) + stat_emb.mul(self.d_i_train_01)
-                gcn1_users_embedding_negtrue = self.W_0(gcn1_users_embedding_negtrue)
+                # gcn1_users_embedding_negtrue = self.W_0(gcn1_users_embedding_negtrue)
                 gcn1_items_embedding_negtrue = torch.sparse.mm(self.item_user_matrix_negtrue, stat_emb) + k_difficulty.mul(self.d_j_train_01)
-                gcn1_items_embedding_negtrue = self.W_0(gcn1_items_embedding_negtrue)
+                # gcn1_items_embedding_negtrue = self.W_0(gcn1_items_embedding_negtrue)
                 stat_emb = gcn1_users_embedding_postrue + gcn1_users_embedding_negtrue
                 k_difficulty = gcn1_items_embedding_postrue + gcn1_items_embedding_negtrue
         return stat_emb, k_difficulty, stu_emb_bias
