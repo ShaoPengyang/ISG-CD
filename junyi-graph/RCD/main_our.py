@@ -35,10 +35,10 @@ def train(args):
     device = torch.device(('cuda:%d' % (args.gpu)) if torch.cuda.is_available() else 'cpu')
     loss_function = nn.BCELoss(reduction='none')
 
-    net = our_adaptive(args, args.exer_n, args.student_n, args.knowledge_n, 64, 2, 0.05)
+    net = our_adaptive(args, args.exer_n, args.student_n, args.knowledge_n, 128, 2, 0.01)
     net = net.to(device)
 
-    optimizer_net = optim.Adam(net.parameters(), lr=0.0005)
+    optimizer_net = optim.Adam(net.parameters(), lr=0.0002)
 
     # 18
     for epoch in range(100):
