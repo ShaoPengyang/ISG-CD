@@ -181,7 +181,7 @@ class our_adaptive(nn.Module):
         knowledge_emb = knowledge_base_emb.repeat(batch, 1).view(batch, self.knowledge_n, -1)
         k_difficulty = (exer_emb * knowledge_emb).sum(dim=-1, keepdim=False)
 
-         if not self.update:
+        if not self.update:
             for _ in range(self.layer_depth):
                 gcn1_users_embedding_1 = torch.sparse.mm(self.user_item_matrix_1, k_difficulty) + stat_emb.mul(self.d_i_train_1)
                 gcn1_users_embedding_1 = self.W_1(gcn1_users_embedding_1)
