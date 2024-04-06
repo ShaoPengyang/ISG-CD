@@ -1,19 +1,18 @@
-### This repo is for KDD submission 2427. 
-To run all codes, Pytorch (gpu version), networkx, pandas, scikit-learn must be installed. 
+## This repo is for KDD submission 2427. 
 
-### Assist
+### Reproducing experimental results in the original paper. 
+To run all codes, Pytorch (gpu version), networkx, pandas, scikit-learn must be installed. 
+#### Assist
 ```
 cd assist-graph/RCD
 python main_our.py
 ```
-
-### Junyi
+#### Junyi
 ```
 cd junyi-graph/RCD
 python main_our.py
 ```
-
-### Mooc-radar
+#### Mooc-radar
 The MOOC-Radar is too big to upload via Github. 
 if you want to run codes for mooc-radar, please first download the dataset from [link](https://cloud.tsinghua.edu.cn/d/5443ee05152344c79419/), and put the files into "mooc-graph/data/coarse/" (Please mkdir first).
 Then, you should run
@@ -22,3 +21,5 @@ cd mooc-graph/RCD
 python divide_data.py
 python main_our.py
 ```
+
+### Results based on k-fold cross-validation. 
