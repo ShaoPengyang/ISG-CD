@@ -1,6 +1,6 @@
 ## This repo is for KDD submission 2427. 
 
-### Reproducing experimental results in the original paper. 
+### 1. Reproducing experimental results in the original paper. 
 To run all codes, Pytorch (gpu version), networkx, pandas, scikit-learn must be installed. 
 #### Assist
 ```
@@ -22,4 +22,4 @@ python divide_data.py
 python main_our.py
 ```
 
-### Results based on k-fold cross-validation. 
+### 2. Results based on k-fold cross-validation. 
