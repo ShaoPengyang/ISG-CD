@@ -18,10 +18,6 @@ import time
 import math
 import pdb
 
-torch.manual_seed(2023)
-torch.cuda.manual_seed(2023)
-np.random.seed(2023)
-
 def train(args):
     best_auc = 0
     train_dataset = EduData(type='train')
