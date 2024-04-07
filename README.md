@@ -31,8 +31,12 @@ python main_our.py
 ```
 
 ### 2. Results based on k-fold cross-validation. 
-Note that, we add some important baselines according to reviewers' suggestions, e.g., SCD, HAN, KSCD (Some codes are borrowed from [source1](https://github.com/HFUT-LEC/EduStudio/blob/68611db64e42bebf33be66fa0126de0269b07f74/edustudio/model/CD) and [source2](https://github.com/dmlc/dgl/blob/master/examples/pytorch/han/model_hetero.py)). 
+Note that, we add some important baselines according to reviewers' suggestions, e.g., SCD, HAN, KSCD. 
 Considering the time constraints of the rebuttal and the amount of additional experiments, we will release the most important part of the results till April 11 (AOE), with the remaining results gradually provided in the repo until April 18. 
+
+
+
+% Finally, some codes are borrowed from [source1](https://github.com/HFUT-LEC/EduStudio/blob/68611db64e42bebf33be66fa0126de0269b07f74/edustudio/model/CD), and [source2](https://github.com/dmlc/dgl/blob/master/examples/pytorch/han/model_hetero.py] (https://github.com/bigdata-ustc/EduCDM). 
 
 
 
