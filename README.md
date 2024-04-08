@@ -15,12 +15,12 @@ networkx 2.6.3
 ```
 #### Assist
 ```
-cd assist-graph/RCD
+cd assist-graph/CD
 python main_our.py
 ```
 #### Junyi
 ```
-cd junyi-graph/RCD
+cd junyi-graph/CD
 python main_our.py
 ```
 #### Mooc-radar
@@ -28,7 +28,7 @@ The MOOC-Radar is too big to upload via Github.
 if you want to run codes for mooc-radar, please first download the dataset from [link](https://cloud.tsinghua.edu.cn/d/5443ee05152344c79419/), and put the files into "mooc-graph/data/coarse/" (Please mkdir first).
 Then, you should run
 ```
-cd mooc-graph/RCD
+cd mooc-graph/CD
 python divide_data.py
 python main_our.py
 ```
@@ -56,18 +56,18 @@ Five-fold cross-validation on ASSIST
 Five-fold cross-validation on Junyi
 |    | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
 |------------|---------|----------|----------|----------|
-| **IRT**    | 0.  $\pm$ 0.   | 0.   $\pm$ 0.   | 0.  $\pm$ 0.   | -          |
-| **MIRT**   | 0.  $\pm$ 0.   | 0.   $\pm$ 0.   | 0.  $\pm$ 0.   | -          |
-| **PMF**    | 0.  $\pm$ 0.   | 0.   $\pm$ 0.   | 0.  $\pm$ 0.   | -          |
-| **SCD**    | 0.  $\pm$ 0.   | 0.   $\pm$ 0.   | 0.  $\pm$ 0.   | -          |
+| **IRT**    |    |    |    | -          |
+| **MIRT**   |    |    |    | -          |
+| **PMF**    |    |    |    | -          |
+| **SCD**    |    |    |    | -          |
 |            |                |                 |                |            |    
-| **DINA**   | 0.  $\pm$ 0.   | 0.   $\pm$ 0.   | 0.  $\pm$ 0.   | 0.  $\pm$ 0.  |
-| **NCDM**   | 0.  $\pm$ 0.   | 0.   $\pm$ 0.   | 0.  $\pm$ 0.   | 0. $\pm$ 0.   |
-| **RCD**    | 0.  $\pm$ 0.   | 0.   $\pm$ 0.   | 0.  $\pm$ 0.   | 0.  $\pm$ 0.  |
-| **KSCD**   | 0.  $\pm$ 0.   | 0.   $\pm$ 0.   | 0.  $\pm$ 0.   | 0.  $\pm$ 0.  |
-| **KaNCD**  | 0.  $\pm$ 0.   | 0.   $\pm$ 0.   | 0.  $\pm$ 0.   | 0.  $\pm$ 0.  |
-| **HAN-CD** | 0.  $\pm$ 0.   | 0.   $\pm$ 0.   | 0.  $\pm$ 0.   | 0.  $\pm$ 0.  |
-| **ASG-CD** | 0.  $\pm$ 0.   | 0.   $\pm$ 0.   | 0.  $\pm$ 0.   | 0.  $\pm$ 0.  |
+| **DINA**   |    |    |    |   |
+| **NCDM**   |    |    |    |   |
+| **RCD**    |    |    |    |   |
+| **KSCD**   |    |    |    |   |
+| **KaNCD**  |  0.7536 $\pm$ 0.0020 |  0.4096 $\pm$ 0.0012  |  0.7867 $\pm$ 0.0017  |  0.5529 $\pm$ 0.0212 |  
+| **HAN-CD** |  0.7536 $\pm$ 0.0020 |  0.4096 $\pm$ 0.0012  |  0.7867 $\pm$ 0.0017  |  0.5529 $\pm$ 0.0212 |
+| **ASG-CD** |  0.7647 $\pm$ 0.0047 |  0.4017 $\pm$ 0.0032  |  0.7998 $\pm$ 0.0067  |  0.6484 $\pm$ 0.0146 |
 
 ### (3) discussions about newly added baselines
 #### HAN
