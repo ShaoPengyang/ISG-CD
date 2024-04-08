@@ -80,12 +80,13 @@ We agree with the reviewers that analyzing more models is beneficial for our tas
 Second, we define four meta paths, student —>(correctly) exercise <—(correctly) student, exercise —>(correctly) exercise <—(correctly) student, student —>(wrongly) exercise <—(wrongly) student, exercise —>(wrongly) exercise <—(wrongly) student. Two paths are used to update student embeddings, while the other two are for exercise embeddings. 
 Based on node attention, we can obtain four embeddings for a node. HAN introduces a semantic-level attention to combine these embeddings. Finally, we adopt NCDM-style interaction layer (the dimension of node embedding must be the number of concepts, denoted as HAN-CD) to build connections between combined embeddings to predicted response logs. 
 
-2. KSCD 
-KSCD and KaNCD both adopts the matrix factorization techniques. The only difference between KSCD and KaNCD is the diagnositic layer that maps student/exercise representations to predicted response logs. 
+2. KSCD.
 
+KSCD and KaNCD both adopts the matrix factorization techniques. The only difference between KSCD and KaNCD is the diagnositic layer that maps student/exercise representations to predicted response logs. 
 We adopt the original interaction layer in the original KSCD paper on ASSIST ... 
 
-3. SCD
+3. SCD.
+
 First, although SCD is named after CD, it does not have the ability to provide students' proficiency levels on each concepts. It can only be used to predict response logs. Second, SCD has similar shortcomings as RCD, as they both do not distinguish edges of correct/wrong response logs. As we have choosen RCD as a baseline, we do not add SCD in our submission. 
 We agree with reviewers that adding SCD would be better. During the rebuttal process, we will add it as a baseline. The dimension of SCD's embeddings is the same as PMF, KaNCD, KSCD, ASG-CD ... （these models utilize latent embdeddings to represent students and exercises). In detail, the dimension is 128 on ASSIST, 64 on Junyi dataset, 64 on MOOC-Radar dataset. 
 
