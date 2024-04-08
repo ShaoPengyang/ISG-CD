@@ -1,6 +1,6 @@
 ## This repo is for KDD submission 2427. 
 
-This repo includes (1) codes for results in the original paper; (2)  results based on five-fold cross-validation; (3) modifications about newly added baselines. 
+This repo includes (1) codes for results in the original paper; (2)  results based on five-fold cross-validation; (3) discussions about newly added baselines; (4) experiments about whether ASG-CD can detect randomly generated noises. 
 
 ### (1) codes for results in the original paper
 To run all codes, Pytorch (gpu version), networkx, pandas, scikit-learn must be installed. 
@@ -68,7 +68,7 @@ Five-fold cross-validation on Junyi
 | **HAN-CD** | 0.7257  $\pm$ 0.0229   | 0.4297   $\pm$ 0.0151   | 0.7524  $\pm$ 0.0240   | 0.6348  $\pm$ 0.0185  |
 | **ASG-CD** | 0.7283  $\pm$ 0.0222   | 0.4280   $\pm$ 0.0150   | 0.7555  $\pm$ 0.0244   | 0.6383  $\pm$ 0.0207  |
 
-### (3) modifications about newly added baselines
+### (3) discussions about newly added baselines
 #### HAN
 This model needs both graph structure and node features. In our paper, each node does not have features; we only consider heterogeneity in the graph structure (i.e., edge heterogeneity). Therefore, we do not consider these models in our initial submission. 
 
