@@ -61,12 +61,12 @@ Five-fold cross-validation on Junyi
 | **IRT**    |    |    |    | -          |
 | **MIRT**   |    |    |    | -          |
 | **PMF**    |    |    |    | -          |
-| **SCD**    |  0.7184 $\pm$ 0.0099  |  0.4310 $\pm$ 0.0089  |  0.7532 $\pm$ 0.0186  | -          |
-|            |                |                 |                |            |    
+| **SCD**    |  0.7576 $\pm$ 0.0056  |  0.4084 $\pm$ 0.0036  |  0.7902 $\pm$ 0.0040  | -          |
+|            |                       |                       |                       |            |    
 | **DINA**   |    |    |    |   |
 | **NCDM**   |  0.7482 $\pm$ 0.0013  |  0.4141 $\pm$ 0.0016  |  0.7816 $\pm$ 0.0013  | 0.4996 $\pm$ 0.0050 |
 | **RCD**    |    |    |    |   |
-| **KSCD**   |    |    |    |   |
+| **KSCD-variant**   |  0.7561 $\pm$ 0.0029  |  0.4079 $\pm$ 0.0002   |  0.7909 $\pm$ 0.0053   | 0.5001 $\pm$ 0.0039   |
 | **KaNCD**  |  0.7536 $\pm$ 0.0020 |  0.4096 $\pm$ 0.0012  |  0.7867 $\pm$ 0.0017  |  0.5529 $\pm$ 0.0212 |  
 | **HAN-CD** |  0.7626 $\pm$ 0.0039 |  0.4031 $\pm$ 0.0031  |  0.7957 $\pm$ 0.0080  |  0.6469 $\pm$ 0.0132 |
 | **ASG-CD** |  0.7647 $\pm$ 0.0047 |  0.4017 $\pm$ 0.0032  |  0.7998 $\pm$ 0.0067  |  0.6484 $\pm$ 0.0146 |
@@ -75,7 +75,7 @@ Five-fold cross-validation on Junyi
 First of all, results of these newly added baselines are recorded in ``(2) results based on five-fold cross-validation''. 
 
 #### Newly added baselines during the rebuttal process
-1. HAN. 
+**1. HAN.**
 
 This model needs both graph structure and node features. In our paper, each node does not have features; we only consider heterogeneity in the graph structure (i.e., edge heterogeneity). Therefore, we do not consider these models in our initial submission. 
 
@@ -83,13 +83,20 @@ We agree with the reviewers that analyzing more models is beneficial for our tas
 Second, we define four meta paths, student —>(correctly) exercise <—(correctly) student, exercise —>(correctly) exercise <—(correctly) student, student —>(wrongly) exercise <—(wrongly) student, exercise —>(wrongly) exercise <—(wrongly) student. Two paths are used to update student embeddings, while the other two are for exercise embeddings. 
 Based on node attention, we can obtain four embeddings for a node. HAN introduces a semantic-level attention to combine these embeddings. Finally, we adopt NCDM-style interaction layer (the dimension of node embedding must be the number of concepts, denoted as HAN-CD) to build connections between combined embeddings to predicted response logs. 
 
-2. KSCD.
+**2. KSCD.**
 
 KSCD and KaNCD both adopts the matrix factorization techniques. The only difference between KSCD and KaNCD is the diagnositic layer that maps student/exercise representations to predicted response logs. Therefore, we do not include them in our submission. 
 
 We agree with reviewers that adding KSCD would be better. During the rebuttal process, we will add it as a baseline. 
 
-3. SCD.
+The interaction layer of KSCD has several steps. First, in a batch, KSCD has students' comprehension degrees (shape: batch size * concept number) and exercise difficulty (shape: batch size * concept number), concept embeddings (shape: concept number * embedding size). 
+Second, by repeating these matrices, KSCD obtains three matrices (batch size * concept number * concept number, batch size * concept number * concept number, batch size * concept number * embedding size). Third, KSCD uses torch.cat to concatenate these matrices (batch size * concept number * concept number+embedding size), and combine all these representations.  Finally, KSCD reduces the 2-th dimension from (concept number+embedding size) to 1. 
+
+However, we find that matrix with the shape of batch size * concept number * concept number is too large to calculate on Junyi dataset. To avoid this, we propose another solution, which can achieve similar performance on other datasets but saves memory. We choose to sum concept embeddings (shape: concept number * embedding size) to a vector (length: embedding size). Then, we repeat it to a matrix (shape: batch size * embedding size). After that, we concatenate two matrices (shape: batch size * embedding size, shape: batch size * concept number). Also, the dimension reduction process is changed to (concept number+embedding size -> concept number). Other operations are the same as KSCD. 
+
+We also release this KSCD-variant in junyi-graph/CD/models.py. 
+
+**3. SCD.**
 
 First, although SCD is named after CD, it does not have the ability to provide students' proficiency levels on each concepts. It can only be used to predict response logs. Second, SCD has similar shortcomings as RCD, as they both do not distinguish edges of correct/wrong response logs. As we have choosen RCD as a baseline, we do not add SCD in our submission. 
 
@@ -97,7 +104,10 @@ We agree with reviewers that adding SCD would be better. During the rebuttal pro
 
 #### Hyper-parameter settings for baselines. 
 During the rebuttal, we have conducted five-fold cross validation.
-For fair comparisons, we set 
+For fair comparisons, we set the same embedding dimension to PMF, KaNCD, KSCD, ASG-CD, SCD (128 on ASSIST, 64 on Junyi dataset, 64 on MOOC-Radar dataset).  
+We set the batch size to 8192 for all models on all datasets. 
+We find that MIRT would achieve better results when the number of embedding dimension is smaller, therefore, the dimension for MIRT is searched in the range of {4,8,16,32} on three datasets. 
+
 
 
 ### (4) Experiments about whether ASG-CD can detect randomly generated noises

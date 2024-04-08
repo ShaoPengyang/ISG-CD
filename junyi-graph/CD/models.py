@@ -353,3 +353,54 @@ def irf(theta, a, b, c, D=1.702, *, F=np):
     return c + (1 - c) / (1 + F.exp(-D * a * (theta - b)))
 
 irt3pl = irf
+
+
+class KSCD_variant(nn.Module):
+    def __init__(self, args, exer_n, student_n, knowledge_n, dim):
+        self.knowledge_n = knowledge_n
+        self.exer_count = exer_n
+        self.stu_count = student_n
+        self.lowdim = dim
+        self.prednet_input_len = self.knowledge_n
+        self.prednet_len1, self.prednet_len2 = 256, 128  # changeable
+
+        super(KSCD_variant, self).__init__()
+
+        self.stu_emb = nn.Embedding(self.stu_count, self.lowdim)
+        self.cpt_emb = nn.Embedding(self.knowledge_n, self.lowdim)
+        self.exer_emb = nn.Embedding(self.exer_count, self.lowdim)
+
+
+        self.prednet_full1 = PosLinear(self.knowledge_n + self.lowdim, self.knowledge_n, bias=False)
+        self.drop_1 = nn.Dropout(p=0.5)
+        self.prednet_full2 = PosLinear(self.knowledge_n + self.lowdim, self.knowledge_n, bias=False)
+        self.drop_2 = nn.Dropout(p=0.5)
+        self.prednet_full3 = PosLinear(self.knowledge_n, self.knowledge_n)
+
+
+    def forward(self, stu_id, exer_id, k_ids):
+        stu_emb = self.stu_emb.weight
+        exer_emb = self.exer_emb.weight
+        exer_q_mat = k_ids
+        stu_ability = torch.mm(stu_emb, self.cpt_emb.weight.T).sigmoid()
+        exer_diff = torch.mm(exer_emb, self.cpt_emb.weight.T).sigmoid()
+
+        stu_ability = stu_ability[stu_id]
+        exer_diff = exer_diff[exer_id]
+
+        kn_vector = torch.sum(self.cpt_emb.weight, dim=0).repeat(stu_ability.shape[0], 1).reshape(stu_ability.shape[0],self.lowdim)
+
+        preference = torch.sigmoid(self.prednet_full1(torch.cat((stu_ability, kn_vector), dim=1)))
+        diff = torch.sigmoid(self.prednet_full2(torch.cat((exer_diff, kn_vector), dim=1)))
+        o = torch.sigmoid(self.prednet_full3(preference - diff))
+        sum_out = torch.sum(o * exer_q_mat, dim=1)
+        count_of_concept = torch.sum(exer_q_mat, dim=1)
+        y_pd = sum_out / count_of_concept
+        return y_pd.view(-1)
+
+    def predict_proficiency_on_concepts(self):
+        stu_emb = self.stu_emb.weight
+        stu_ability = torch.mm(stu_emb, self.cpt_emb.weight.T).sigmoid()
+        return stu_ability
+
+
