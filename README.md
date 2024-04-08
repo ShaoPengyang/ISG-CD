@@ -1,6 +1,6 @@
 ## This repo is for KDD submission 2427. 
 
-This repo includes (1) codes for results in the original paper; (2)  results based on five-fold cross-validation; (3) discussions about newly added baselines; (4) experiments about whether ASG-CD can detect randomly generated noises. 
+This repo includes (1) codes for results in the original paper; (2)  results based on five-fold cross-validation; (3) discussions about baselines (including newly added ones, e.g., KSCD, SCD, HAN); (4) experiments about whether ASG-CD can detect randomly generated noises. 
 
 ### (1) codes for results in the original paper
 To run all codes, Pytorch (gpu version), networkx, pandas, scikit-learn must be installed. 
@@ -59,29 +59,39 @@ Five-fold cross-validation on Junyi
 | **IRT**    |    |    |    | -          |
 | **MIRT**   |    |    |    | -          |
 | **PMF**    |    |    |    | -          |
-| **SCD**    |    |    |    | -          |
+| **SCD**    |  0.7184 $\pm$ 0.0099  |  0.4310 $\pm$ 0.0089  |  0.7532 $\pm$ 0.0186  | -          |
 |            |                |                 |                |            |    
 | **DINA**   |    |    |    |   |
-| **NCDM**   |    |    |    |   |
+| **NCDM**   |  0.7482 $\pm$ 0.0013  |  0.4141 $\pm$ 0.0016  |  0.7816 $\pm$ 0.0013  | 0.4996 $\pm$ 0.0050 |
 | **RCD**    |    |    |    |   |
 | **KSCD**   |    |    |    |   |
 | **KaNCD**  |  0.7536 $\pm$ 0.0020 |  0.4096 $\pm$ 0.0012  |  0.7867 $\pm$ 0.0017  |  0.5529 $\pm$ 0.0212 |  
-| **HAN-CD** |  0.7536 $\pm$ 0.0020 |  0.4096 $\pm$ 0.0012  |  0.7867 $\pm$ 0.0017  |  0.5529 $\pm$ 0.0212 |
+| **HAN-CD** |  0.7626 $\pm$ 0.0039 |  0.4031 $\pm$ 0.0031  |  0.7957 $\pm$ 0.0080  |  0.6469 $\pm$ 0.0132 |
 | **ASG-CD** |  0.7647 $\pm$ 0.0047 |  0.4017 $\pm$ 0.0032  |  0.7998 $\pm$ 0.0067  |  0.6484 $\pm$ 0.0146 |
 
-### (3) discussions about newly added baselines
-#### HAN
-This model needs both graph structure and node features. In our paper, each node does not have features; we only consider heterogeneity in the graph structure (i.e., edge heterogeneity). Therefore, we do not consider these models in our initial submission. 
+### (3) discussions about baselines
+First of all, results of these newly added baselines are recorded in ``(2) results based on five-fold cross-validation''. 
 
+#### Newly added baselines during the rebuttal process
+1. HAN. 
+
+This model needs both graph structure and node features. In our paper, each node does not have features; we only consider heterogeneity in the graph structure (i.e., edge heterogeneity). Therefore, we do not consider these models in our initial submission. 
 We agree with the reviewers that analyzing more models is beneficial for our task. To fit our task, we first replace the initial node features&projection with free node embeddings. 
 Second, we define four meta paths, student —>(correctly) exercise <—(correctly) student, exercise —>(correctly) exercise <—(correctly) student, student —>(wrongly) exercise <—(wrongly) student, exercise —>(wrongly) exercise <—(wrongly) student. Two paths are used to update student embeddings, while the other two are for exercise embeddings. 
 Based on node attention, we can obtain four embeddings for a node. HAN introduces a semantic-level attention to combine these embeddings. Finally, we adopt NCDM-style interaction layer (the dimension of node embedding must be the number of concepts, denoted as HAN-CD) to build connections between combined embeddings to predicted response logs. 
-#### KSCD 
+
+2. KSCD 
 KSCD and KaNCD both adopts the matrix factorization techniques. The only difference between KSCD and KaNCD is the diagnositic layer that maps student/exercise representations to predicted response logs. 
+
 We adopt the original interaction layer in the original KSCD paper on ASSIST ... 
-#### SCD
-Although it is named after CD, however, SCD does not have the ability to provide students' proficiency levels on each concepts.
-It can only be used to predict response logs. Therefore, we do not choose SCD as a baseline in our submission. 
+
+3. SCD
+First, although SCD is named after CD, it does not have the ability to provide students' proficiency levels on each concepts. It can only be used to predict response logs. Second, SCD has similar shortcomings as RCD, as they both do not distinguish edges of correct/wrong response logs. As we have choosen RCD as a baseline, we do not add SCD in our submission. 
+We agree with reviewers that adding SCD would be better. During the rebuttal process, we will add it as a baseline. The dimension of SCD's embeddings is the same as PMF, KaNCD, KSCD, ASG-CD ... （these models utilize latent embdeddings to represent students and exercises). In detail, the dimension is 128 on ASSIST, 64 on Junyi dataset, 64 on MOOC-Radar dataset. 
+
+#### Hyper-parameter settings for baselines. 
+During the rebuttal, we have conducted five-fold cross validation.
+For fair comparisons, we set 
 
 
 ### (4) experiments about whether ASG-CD can detect randomly generated noises
