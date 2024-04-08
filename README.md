@@ -2,7 +2,7 @@
 
 This repo includes (1) codes for results in the original paper; (2)  results based on five-fold cross-validation; (3) discussions about baselines (including newly added ones, e.g., KSCD, SCD, HAN); (4) experiments about whether ASG-CD can detect randomly generated noises. 
 
-### (1) codes for results in the original paper
+### (1) Codes for results in the original paper
 To run all codes, Pytorch (gpu version), networkx, pandas, scikit-learn must be installed. 
 
 Our environment:
@@ -33,7 +33,7 @@ python divide_data.py
 python main_our.py
 ```
 
-### (2) results based on five-fold cross-validation 
+### (2) Results based on five-fold cross-validation 
 Note that, we add some important baselines according to reviewers' suggestions, e.g., SCD, HAN, KSCD. 
 Considering the time constraints of the rebuttal and the amount of additional experiments, we will release the most important part of the results till April 11 (AOE), with the remaining results gradually provided in the repo until April 18. 
 
@@ -71,7 +71,7 @@ Five-fold cross-validation on Junyi
 | **HAN-CD** |  0.7626 $\pm$ 0.0039 |  0.4031 $\pm$ 0.0031  |  0.7957 $\pm$ 0.0080  |  0.6469 $\pm$ 0.0132 |
 | **ASG-CD** |  0.7647 $\pm$ 0.0047 |  0.4017 $\pm$ 0.0032  |  0.7998 $\pm$ 0.0067  |  0.6484 $\pm$ 0.0146 |
 
-### (3) discussions about baselines
+### (3) Discussions about baselines
 First of all, results of these newly added baselines are recorded in ``(2) results based on five-fold cross-validation''. 
 
 #### Newly added baselines during the rebuttal process
@@ -100,7 +100,7 @@ During the rebuttal, we have conducted five-fold cross validation.
 For fair comparisons, we set 
 
 
-### (4) experiments about whether ASG-CD can detect randomly generated noises
+### (4) Experiments about whether ASG-CD can detect randomly generated noises
 
 
 
