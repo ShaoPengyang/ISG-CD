@@ -84,6 +84,9 @@ Although it is named after CD, however, SCD does not have the ability to provide
 It can only be used to predict response logs. Therefore, we do not choose SCD as a baseline in our submission. 
 
 
+### (4) experiments about whether ASG-CD can detect randomly generated noises
+
+
 
 <!--Finally, some codes are borrowed from [source1](https://github.com/HFUT-LEC/EduStudio/blob/68611db64e42bebf33be66fa0126de0269b07f74/edustudio/model/CD), and [source2](https://github.com/dmlc/dgl/blob/master/examples/pytorch/han/model_hetero.py] (https://github.com/bigdata-ustc/EduCDM). -->
 
