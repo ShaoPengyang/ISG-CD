@@ -40,8 +40,9 @@ Considering the time constraints of the rebuttal and the amount of additional ex
 #### HAN
 This model needs both graph structure and node features. In our paper, each node does not have features; we only consider heterogeneity in the graph structure (i.e., edge heterogeneity). Therefore, we do not consider these models in our initial submission. 
 
-We agree with the reviewers that analyzing more models is beneficial for our task. To fit our task, we first define four meta paths, student —>(correctly) exercise <—(correctly) student, exercise —>(correctly) exercise <—(correctly) student, student —>(wrongly) exercise <—(wrongly) student, exercise —>(wrongly) exercise <—(wrongly) student. Then, we replace the initial node features&projection with free node embeddings. 
-Based on node attention, we can obtain four embeddings for a node. HAN introduces a semantic-level attention to combine these embeddings. Finally, we adopt inner dot (node embedding can be any dimension, denoted as HAN) or NCDM-style interaction layer (the dimension of node embedding must be the number of concepts, denoted as HAN-CD) to build connections between combined embeddings to predicted response logs. 
+We agree with the reviewers that analyzing more models is beneficial for our task. To fit our task, we first replace the initial node features&projection with free node embeddings. 
+Second, we define four meta paths, student —>(correctly) exercise <—(correctly) student, exercise —>(correctly) exercise <—(correctly) student, student —>(wrongly) exercise <—(wrongly) student, exercise —>(wrongly) exercise <—(wrongly) student. Two paths are used to update student embeddings, while the other two are for exercise embeddings. 
+Based on node attention, we can obtain four embeddings for a node. HAN introduces a semantic-level attention to combine these embeddings. Finally, we adopt NCDM-style interaction layer (the dimension of node embedding must be the number of concepts, denoted as HAN-CD) to build connections between combined embeddings to predicted response logs. 
 #### KSCD 
 KSCD and KaNCD both adopts the matrix factorization techniques. The only difference between KSCD and KaNCD is the diagnositic layer that maps student/exercise representations to predicted response logs. 
 We adopt the original interaction layer in the original KSCD paper on ASSIST ... 
