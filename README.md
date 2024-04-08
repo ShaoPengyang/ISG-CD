@@ -36,13 +36,13 @@ python main_our.py
 Note that, we add some important baselines according to reviewers' suggestions, e.g., SCD, HAN, KSCD. 
 Considering the time constraints of the rebuttal and the amount of additional experiments, we will release the most important part of the results till April 11 (AOE), with the remaining results gradually provided in the repo until April 18. 
 
-| **null**   | **ACC** | **null** | **RMSE** | **null** | **AUC** | **null** | **DOA** | **null**|
+| **null**   | **ACC** |  | **RMSE** |  | **AUC** |  | **DOA** | |
 |------------|---------|----------|----------|----------|---------|----------|---------|---------|
 | **IRT**    | 0.7072  | 0.0294   | 0.4421   | 0.0212   | 0.7259  | 0.0290   | -       |-       |
 | **MIRT**   | 0.7154  | 0.0363   | 0.4409   | 0.0211   | 0.7483  | 0.0198   | -       |-       |
 | **PMF**    | 0.7084  | 0.0794   | 0.4260   | 0.0353   | 0.7472  | 0.0703   | -       |-       |
 | **SCD**    | 0.7212  | 0.0566   | 0.4288   | 0.0308   | 0.7552  | 0.0576   | -       |-       |
-| ****       |         |          |          |          |         |          |         |        |
+|       |         |          |          |          |         |          |         |        |
 | **DINA**   | 0.6253  | 0.0245   | 0.4960   | 0.0128   | 0.6794  | 0.0201   | 0.5579  |-       |
 | **NCDM**   | 0.7072  | 0.0222   | 0.4460   | 0.0173   | 0.7244  | 0.0212   | 0.5543  |-       |
 | **RCD**    | 0.7103  | 0.0164   | 0.4512   | 0.0241   | 0.7301  | 0.0226   | 0.6221  |-       |
