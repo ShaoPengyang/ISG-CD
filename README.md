@@ -36,6 +36,21 @@ python main_our.py
 Note that, we add some important baselines according to reviewers' suggestions, e.g., SCD, HAN, KSCD. 
 Considering the time constraints of the rebuttal and the amount of additional experiments, we will release the most important part of the results till April 11 (AOE), with the remaining results gradually provided in the repo until April 18. 
 
+| **null**   | **ACC** | **null** | **RMSE** | **null** | **AUC** | **null** | **DOA** | **null**|
+|------------|---------|----------|----------|----------|---------|----------|---------|---------|
+| **IRT**    | 0.7072  | 0.0294   | 0.4421   | 0.0212   | 0.7259  | 0.0290   | -       |-       |
+| **MIRT**   | 0.7154  | 0.0363   | 0.4409   | 0.0211   | 0.7483  | 0.0198   | -       |-       |
+| **PMF**    | 0.7084  | 0.0794   | 0.4260   | 0.0353   | 0.7472  | 0.0703   | -       |-       |
+| **SCD**    | 0.7212  | 0.0566   | 0.4288   | 0.0308   | 0.7552  | 0.0576   | -       |-       |
+| ****       |         |          |          |          |         |          |         |        |
+| **DINA**   | 0.6253  | 0.0245   | 0.4960   | 0.0128   | 0.6794  | 0.0201   | 0.5579  |-       |
+| **NCDM**   | 0.7072  | 0.0222   | 0.4460   | 0.0173   | 0.7244  | 0.0212   | 0.5543  |-       |
+| **RCD**    | 0.7103  | 0.0164   | 0.4512   | 0.0241   | 0.7301  | 0.0226   | 0.6221  |-       |
+| **KSCD**   | 0.7209  | 0.0241   | 0.4331   | 0.0177   | 0.7503  | 0.0252   | 0.5092  |-       |
+| **KaNCD**  | 0.7182  | 0.0250   | 0.4423   | 0.0195   | 0.7404  | 0.0251   | 0.6057  |-       |
+| **HAN-CD** | 0.7257  | 0.0229   | 0.4297   | 0.0151   | 0.7524  | 0.0240   | 0.6348  |-       |
+| **our**    | 0.7283  | 0.0222   | 0.4280   | 0.0150   | 0.7555  | 0.0244   | 0.6383  |-       |
+
 ### (3) modifications about newly added baselines
 #### HAN
 This model needs both graph structure and node features. In our paper, each node does not have features; we only consider heterogeneity in the graph structure (i.e., edge heterogeneity). Therefore, we do not consider these models in our initial submission. 
