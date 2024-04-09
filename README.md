@@ -10,6 +10,9 @@ This repo includes
 
 (4) Discussions about baselines (including newly added ones, e.g., KSCD, SCD, HAN). 
 
+(5) Hyper-parameter settings
+ 
+
 ## (1) Codes for results in the original paper
 To run all codes, Pytorch (gpu version), networkx, pandas, scikit-learn must be installed. 
 
@@ -126,7 +129,8 @@ This writing approach has been used in previous literature, e.g., in the light g
 Second, we observe that the removal of W_1 and W_0 results in different trends on different datasets. 
 On the ASSIST dataset, removing these transformation matrices leads to a small decrease in accuracy performance, while on the Junyi dataset, it results in performance improvement. All these changes were relatively small. 
 
-Overall, since the effects of removal are small and these transformation matrices are not related to the main focus of the paper, we do not discuss it in our submission. 
+Overall, since the effects of removal are small and these transformation matrices are not related to the main focus of the paper, we do not compare or discuss it in our submission. 
+Due to reviewers' requests, we are willing to provide experimental results in above two tables. 
 
 
 ## (4) Discussions about baselines
@@ -148,16 +152,12 @@ Therefore, their performance are quite close.
 
 **2. KSCD.**
 
-KSCD and KaNCD both adopts the matrix factorization techniques. The only difference between KSCD and KaNCD is the diagnositic layer that maps student/exercise representations to predicted response logs. Therefore, we do not include them in our submission. 
+KSCD and KaNCD both adopts the matrix factorization techniques. The only difference between KSCD and KaNCD is the diagnositic layer that maps student/exercise representations to predicted response logs. As we already includes KaNCD, we do not include KSCD in our initial submission. 
 
-We agree with reviewers that adding KSCD would be better. During the rebuttal process, we will add it as a baseline. 
-
-The interaction layer of KSCD has several steps. First, in a batch, KSCD has students' comprehension degrees (shape: batch size * concept number) and exercise difficulty (shape: batch size * concept number), concept embeddings (shape: concept number * embedding size). 
+We agree with reviewers that adding KSCD would be better. During the rebuttal process, we will add it as a baseline. Note that, the interaction layer of KSCD has several steps. First, in a batch, KSCD has students' comprehension degrees (shape: batch size * concept number) and exercise difficulty (shape: batch size * concept number), concept embeddings (shape: concept number * embedding size). 
 Second, by repeating these matrices, KSCD obtains three matrices (batch size * concept number * concept number, batch size * concept number * concept number, batch size * concept number * embedding size). Third, KSCD uses torch.cat to concatenate these matrices (batch size * concept number * concept number+embedding size), and combine all these representations.  Finally, KSCD reduces the 2-th dimension from (concept number+embedding size) to 1. 
 
-However, we find that matrix with the shape of batch size * concept number * concept number is too large to calculate on Junyi dataset. To avoid this, we propose another solution, which can achieve similar performance on other datasets but saves memory. We choose to sum concept embeddings (shape: concept number * embedding size) to a vector (length: embedding size). Then, we repeat it to a matrix (shape: batch size * embedding size). After that, we concatenate two matrices (shape: batch size * embedding size, shape: batch size * concept number). Also, the dimension reduction process is changed to (concept number+embedding size -> concept number). Other operations are the same as KSCD. 
-
-We also release this KSCD-variant in junyi-graph/CD/models.py. 
+However, we find that matrix with the shape of batch size * concept number * concept number is too large to calculate on Junyi dataset. To avoid this, we propose another solution, which can achieve similar performance on other datasets but saves memory. We choose to sum concept embeddings (shape: concept number * embedding size) to a vector (length: embedding size). Then, we repeat it to a matrix (shape: batch size * embedding size). After that, we concatenate two matrices (shape: batch size * embedding size, shape: batch size * concept number). Also, the dimension reduction process is changed to (concept number+embedding size -> concept number). Other operations are the same as KSCD. We also release this KSCD-variant in junyi-graph/CD/models.py. 
 
 **3. SCD.**
 
@@ -165,19 +165,13 @@ First, although SCD is named after CD, it does not have the ability to provide s
 
 We agree with reviewers that adding SCD would be better. During the rebuttal process, we will add it as a baseline. The dimension of SCD's embeddings is the same as PMF, KaNCD, KSCD, ASG-CD ... （these models utilize latent embdeddings to represent students and exercises). In detail, the dimension is 128 on ASSIST, 64 on Junyi dataset, 64 on MOOC-Radar dataset. 
 
-#### Hyper-parameter settings for baselines. 
+## (5) Hyper-parameter settings
 During the rebuttal, we have conducted five-fold cross validation.
-For fair comparisons, we set the same embedding dimension to PMF, KaNCD, KSCD, ASG-CD, SCD (128 on ASSIST, 64 on Junyi dataset, 64 on MOOC-Radar dataset).  We set the batch size to 8192 for all models on all datasets. 
-We adopt Xavier to init trainable parameters for all models. 
+We search the best learning rate in the range of {0.0001,0.0005, 0.001, 0.005, 0.01} **for all models**. 
+For fair comparisons, we set the same embedding dimension to PMF, KaNCD, KSCD, ASG-CD, SCD (128 on ASSIST, 64 on Junyi dataset, 64 on MOOC-Radar dataset).  We set the batch size to 8192 **for all models**. 
+We adopt Xavier to init trainable parameters **for all models**. 
 
-We a_range in IRT to 1. We find that MIRT would achieve better results when the number of embedding dimension is smaller, therefore, the dimension for MIRT is searched in the range of {4,8,16,32} on three datasets. The hidden dimension of Poslinear layers are 256,128 respectively for neural network based CD models, i.e., NCDM, KaNCD, ASG-CD. 
-
-
-
+We set a_range of IRT and MIRT to 1. We find that MIRT would achieve better results when the number of embedding dimension is smaller, therefore, the dimension for MIRT is searched in the range of {4,8,16,32} on three datasets. The hidden dimension of Poslinear layers are 256,128 respectively for neural network based CD models, e.g., NCDM, KaNCD, ASG-CD. Both our proposed ASG-CD and KaNCD adopt GMF as the basic matrix factorization technique. 
 
 
 <!--Finally, some codes are borrowed from [source1](https://github.com/HFUT-LEC/EduStudio/blob/68611db64e42bebf33be66fa0126de0269b07f74/edustudio/model/CD), and [source2](https://github.com/dmlc/dgl/blob/master/examples/pytorch/han/model_hetero.py] (https://github.com/bigdata-ustc/EduCDM). -->
-
-
-
-
