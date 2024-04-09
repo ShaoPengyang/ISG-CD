@@ -44,7 +44,7 @@ python main_our.py
 Note that, we realize the graph aggregation process by torch sparse for our models and baselines. The original codes for RCD is too time-consuming, and sparse matrix multiplication can improve it and achieve the same operation. 
 
 ## (2) Results based on five-fold cross-validation 
-Considering the time constraints of the rebuttal and the big amount of additional experiments, we will release most results till April 11 (AOE), with the remaining results gradually provided in the repo until April 18. As we re-split data and conduct five-fold cross-validation, the results may be different from previous paper, but the tendency is similar. 
+**Considering the time constraints of the rebuttal and the big amount of additional experiments, we will release most results till April 11 (AOE), with the remaining results gradually provided in the repo until April 18.** As we re-split data and conduct five-fold cross-validation, the results may be different from previous paper, but the tendency is similar. 
 
 We have categorized all the models into two groups. Models in the first group are unable to provide students' comprehension degrees on concepts and can only predict response logs. Models in the second group can simultaneously accomplish these two tasks. We have highlighted the optimal results in each group.
 
