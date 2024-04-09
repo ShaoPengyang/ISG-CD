@@ -1,6 +1,7 @@
 ## This repo is for KDD submission 2427. 
 
-This repo includes (1) codes for results in the original paper; (2)  results based on five-fold cross-validation; (3) discussions about baselines (including newly added ones, e.g., KSCD, SCD, HAN); (4) experiments about whether ASG-CD can detect randomly generated noises. 
+This repo includes (1) Codes for results in the original paper; (2)  Experimental results based on five-fold cross-validation; (3) Experiments about whether ASG-CD can detect randomly generated noises & Experiments about whether removing W_1 and W_0. 
+(4) Discussions about baselines (including newly added ones, e.g., KSCD, SCD, HAN);
 
 ### (1) Codes for results in the original paper
 To run all codes, Pytorch (gpu version), networkx, pandas, scikit-learn must be installed. 
@@ -33,19 +34,21 @@ python divide_data.py
 python main_our.py
 ```
 
-### (2) Results based on five-fold cross-validation 
-Note that, we add some important baselines according to reviewers' suggestions, e.g., SCD, HAN, KSCD. 
-Considering the time constraints of the rebuttal and the amount of additional experiments, we will release the most important part of the results till April 11 (AOE), with the remaining results gradually provided in the repo until April 18. 
+Note that, we realize the graph aggregation process by torch sparse for our models and baselines. The original codes for RCD is too time-consuming, and sparse matrix multiplication can improve it and achieve the same operation. 
 
-During the rebuttal process, we randomly split response logs into training, validation, and testing sets with ratio of 7:1:2. Therefore, the results may be different from previous paper, but the tendency is similar. 
+### (2) Results based on five-fold cross-validation 
+Considering the time constraints of the rebuttal and the big amount of additional experiments, we will release most results till April 11 (AOE), with the remaining results gradually provided in the repo until April 18. As we re-split data and conduct five-fold cross-validation, the results may be different from previous paper, but the tendency is similar. 
+
+We have categorized all the models into two groups. Models in the first group are unable to provide students' comprehension degrees on concepts and can only predict response logs. Models in the second group can simultaneously accomplish these two tasks. We have highlighted the optimal results in each group.
+
 
 Five-fold cross-validation on ASSIST
 |    | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
 |------------|---------|----------|----------|----------|
-| **IRT**    | 0.7072  $\pm$ 0.0294   | 0.4421   $\pm$ 0.0212   | 0.7259  $\pm$ 0.0290   | -              |
+| **IRT**    | 0.7072  $\pm$ 0.0294   | 0.4421   $\pm$ 0.0212   | 0.7259  $\pm$ 0.0290   | -             |
 | **MIRT**   | 0.7154  $\pm$ 0.0363   | 0.4409   $\pm$ 0.0211   | 0.7483  $\pm$ 0.0198   | -             |
-| **PMF**    | 0.7084  $\pm$ 0.0794   | 0.4260   $\pm$ 0.0353   | 0.7472  $\pm$ 0.0703   | -             |
-| **SCD**    | 0.7212  $\pm$ 0.0566   | 0.4288   $\pm$ 0.0308   | 0.7552  $\pm$ 0.0576   | -            |
+| **PMF**    | 0.7084  $\pm$ 0.0794   | 0.4310   $\pm$ 0.0353   | 0.7472  $\pm$ 0.0703   | -             |
+| **SCD**    | **0.7212  $\pm$ 0.0566**   | **0.4288   $\pm$ 0.0308**   | **0.7552  $\pm$ 0.0576**   | -            |
 |            |                      |                       |                      |                    |    
 | **DINA**   | 0.6253  $\pm$ 0.0245   | 0.4960   $\pm$ 0.0128   | 0.6794  $\pm$ 0.0201   | 0.5579  $\pm$ 0.0316   |
 | **NCDM**   | 0.7072  $\pm$ 0.0222   | 0.4460   $\pm$ 0.0173   | 0.7244  $\pm$ 0.0212   | 0.5543 $\pm$ 0.0293   |
@@ -53,12 +56,12 @@ Five-fold cross-validation on ASSIST
 | **KSCD**   | 0.7209  $\pm$ 0.0241   | 0.4331   $\pm$ 0.0177   | 0.7503  $\pm$ 0.0252   | 0.5092  $\pm$ 0.0062   |
 | **KaNCD**  | 0.7182  $\pm$ 0.0250   | 0.4423   $\pm$ 0.0195   | 0.7404  $\pm$ 0.0251   | 0.6057  $\pm$ 0.0231   |
 | **HAN-CD** | 0.7257  $\pm$ 0.0229   | 0.4297   $\pm$ 0.0151   | 0.7524  $\pm$ 0.0240   | 0.6348  $\pm$ 0.0185   |
-| **ASG-CD**    | 0.7283  $\pm$ 0.0222   | 0.4280   $\pm$ 0.0150   | 0.7555  $\pm$ 0.0244   | 0.6383  $\pm$ 0.0207   |
+| **ASG-CD**    | **0.7283  $\pm$ 0.0222**   | **0.4280   $\pm$ 0.0150**   | **0.7555  $\pm$ 0.0244**   | **0.6383  $\pm$ 0.0207**   |
 
 Five-fold cross-validation on Junyi
 |    | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
 |------------|---------|----------|----------|----------|
-| **IRT**    |    |    |    | -          |
+| **IRT**    |  0.7641 $\pm$ 0.0042  |  0.4020 $\pm$ 0.0027  |  0.7997 $\pm$ 0.0059  | -          |
 | **MIRT**   |    |    |    | -          |
 | **PMF**    |    |    |    | -          |
 | **SCD**    |  0.7576 $\pm$ 0.0056  |  0.4084 $\pm$ 0.0036  |  0.7902 $\pm$ 0.0040  | -          |
@@ -69,10 +72,59 @@ Five-fold cross-validation on Junyi
 | **KSCD-variant**   |  0.7561 $\pm$ 0.0029  |  0.4079 $\pm$ 0.0002   |  0.7909 $\pm$ 0.0053   | 0.5001 $\pm$ 0.0039   |
 | **KaNCD**  |  0.7536 $\pm$ 0.0020 |  0.4096 $\pm$ 0.0012  |  0.7867 $\pm$ 0.0017  |  0.5529 $\pm$ 0.0212 |  
 | **HAN-CD** |  0.7626 $\pm$ 0.0039 |  0.4031 $\pm$ 0.0031  |  0.7957 $\pm$ 0.0080  |  0.6469 $\pm$ 0.0132 |
-| **ASG-CD** |  0.7647 $\pm$ 0.0047 |  0.4017 $\pm$ 0.0032  |  0.7998 $\pm$ 0.0067  |  0.6484 $\pm$ 0.0146 |
+| **ASG-CD** |  **0.7647 $\pm$ 0.0047** |  **0.4017 $\pm$ 0.0032**  |  **0.7998 $\pm$ 0.0067**  |  **0.6484 $\pm$ 0.0146** |
 
-### (3) Discussions about baselines
+Five-fold cross-validation on MOOC-Radar
+|    | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
+|------------|---------|----------|----------|----------|
+| **IRT**    |    |    |    | -          |
+| **MIRT**   |    |    |    | -          |
+| **PMF**    |    |    |    | -          |
+| **SCD**    |    |    |    | -          |
+|            |    |    |    |            |    
+| **DINA**   |    |    |    |            |
+| **NCDM**   |    |    |    |            |
+| **RCD**    |    |    |    |            |
+| **KSCD-variant**   |    |     |     |    |
+| **KaNCD**  |    |    |    |            | 
+| **HAN-CD** |    |    |    |            |
+| **ASG-CD** |    |    |    |            |
+
+
+### (3) Experiments about whether ASG-CD can detect randomly generated noises & Experiments about whether removing W_1 and W_0
+
+#### Experiments about whether ASG-CD can detect randomly generated noises
+We choose the Junyi dataset to conduct this experiment. 
+
+#### Experiments about whether removing W_1 and W_0
+We choose the ASSIST and Junyi datasets to conduct these experiments.
+
+Experiments about whether removing W_1 and W_0 on ASSIST dataset
+|    | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
+|------------|---------|----------|----------|----------|
+| **Not removing**    | **0.7283  $\pm$ 0.0222**   | **0.4280   $\pm$ 0.0150**   | **0.7555  $\pm$ 0.0244**   | **0.6383  $\pm$ 0.0207**   |
+| **Removing**   |  0.7224 $\pm$ 0.0268 |  0.4316 $\pm$ 0.0166  |  0.7482 $\pm$ 0.274  |  0.6331 $\pm$ 0.0331 |
+
+Experiments about whether removing W_1 and W_0 on Junyi dataset
+|    | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
+|------------|---------|----------|----------|----------|
+| **Not removing**    |  0.7647 $\pm$ 0.0047 | 0.4017 $\pm$ 0.0032  |  0.7998 $\pm$ 0.0067  |  0.6484 $\pm$ 0.0146 |
+| **Removing**   |  **0.7668 $\pm$ 0.0033** | **0.4004 $\pm$ 0.0037**  |  **0.8026 $\pm$ 0.0056**  |  **0.6615 $\pm$ 0.0194** |
+
+Apart from discussions in the rebuttal box, we provide more discussions here. 
+
+First, the reviewers emphasized the removal of W_1 and W_0, which is essentially equivalent to setting both matrices as the identity matrix.
+This writing approach has been used in previous literature, e.g., in the light graph-based recommendation model LR-GCCF earlier than lightgcn, the authors annotated W matrix but did not introduce it in the actual implementation as they treated it as an identity matrix. We argue that whether introducing W_1 and W_0 is a specific experimental setup, which are not directly related to the main focus of the paper. 
+
+Second, we observe that the removal of W_1 and W_0 results in different trends on different datasets. 
+On the ASSIST dataset, removing these transformation matrices leads to a small decrease in accuracy performance, while on the Junyi dataset, it results in performance improvement. All these changes were relatively small. 
+
+Overall, since the effects of removal are small and these transformation matrices are not related to the main focus of the paper, we do not discuss it in our submission. 
+
+
+### (4) Discussions about baselines
 First of all, results of these newly added baselines are recorded in ``(2) results based on five-fold cross-validation''. 
+The following part includes introduction to newly-added baselines, and hyper-parameter settings. 
 
 #### Newly added baselines during the rebuttal process
 **1. HAN.**
@@ -82,6 +134,10 @@ This model needs both graph structure and node features. In our paper, each node
 We agree with the reviewers that analyzing more models is beneficial for our task. To fit our task, we first replace the initial node features&projection with free node embeddings. 
 Second, we define four meta paths, student —>(correctly) exercise <—(correctly) student, exercise —>(correctly) exercise <—(correctly) student, student —>(wrongly) exercise <—(wrongly) student, exercise —>(wrongly) exercise <—(wrongly) student. Two paths are used to update student embeddings, while the other two are for exercise embeddings. 
 Based on node attention, we can obtain four embeddings for a node. HAN introduces a semantic-level attention to combine these embeddings. Finally, we adopt NCDM-style interaction layer (the dimension of node embedding must be the number of concepts, denoted as HAN-CD) to build connections between combined embeddings to predicted response logs. 
+
+In fact, HAN-CD is very similar to our ASG-CD. HAN can handle edge and feature heterogeneity at the same time, but there are no features. Consequently, the transfered solution is similar to GCMC used in our paper. 
+For example, both them output the final aggregation layer rather than stacking all aggregation layers. The differences lie in that HAN-CD introduces hierarchical attention and that HAN-CD does not apply adaptive learning. 
+Therefore, their performance are quite close. 
 
 **2. KSCD.**
 
@@ -104,13 +160,12 @@ We agree with reviewers that adding SCD would be better. During the rebuttal pro
 
 #### Hyper-parameter settings for baselines. 
 During the rebuttal, we have conducted five-fold cross validation.
-For fair comparisons, we set the same embedding dimension to PMF, KaNCD, KSCD, ASG-CD, SCD (128 on ASSIST, 64 on Junyi dataset, 64 on MOOC-Radar dataset).  
-We set the batch size to 8192 for all models on all datasets. 
-We find that MIRT would achieve better results when the number of embedding dimension is smaller, therefore, the dimension for MIRT is searched in the range of {4,8,16,32} on three datasets. 
+For fair comparisons, we set the same embedding dimension to PMF, KaNCD, KSCD, ASG-CD, SCD (128 on ASSIST, 64 on Junyi dataset, 64 on MOOC-Radar dataset).  We set the batch size to 8192 for all models on all datasets. 
+We adopt Xavier to init trainable parameters for all models. 
+
+We a_range in IRT to 1. We find that MIRT would achieve better results when the number of embedding dimension is smaller, therefore, the dimension for MIRT is searched in the range of {4,8,16,32} on three datasets. The hidden dimension of Poslinear layers are 256,128 respectively for neural network based CD models, i.e., NCDM, KaNCD, ASG-CD. 
 
 
-
-### (4) Experiments about whether ASG-CD can detect randomly generated noises
 
 
 
