@@ -1,7 +1,14 @@
 ## This repo is for KDD submission 2427. 
 
-This repo includes (1) Codes for results in the original paper; (2)  Experimental results based on five-fold cross-validation; (3) Experiments about whether ASG-CD can detect randomly generated noises & Experiments about whether removing W_1 and W_0. 
-(4) Discussions about baselines (including newly added ones, e.g., KSCD, SCD, HAN);
+This repo includes 
+
+(1) Codes for results in the original paper; 
+
+(2)  Experimental results based on five-fold cross-validation; 
+
+(3) Experiments about whether ASG-CD can detect randomly generated noises & Experiments about whether removing W_1 and W_0;
+
+(4) Discussions about baselines (including newly added ones, e.g., KSCD, SCD, HAN). 
 
 ### (1) Codes for results in the original paper
 To run all codes, Pytorch (gpu version), networkx, pandas, scikit-learn must be installed. 
