@@ -53,7 +53,7 @@ We have categorized all the models into two groups. Models in the first group ar
 
 
 Five-fold cross-validation on ASSIST
-|    | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
+|  **Model**  | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
 |------------|---------|----------|----------|----------|
 | **IRT**    | 0.7072  $\pm$ 0.0294   | 0.4421   $\pm$ 0.0212   | 0.7259  $\pm$ 0.0290   | -             |
 | **MIRT**   | 0.7154  $\pm$ 0.0363   | 0.4409   $\pm$ 0.0211   | 0.7483  $\pm$ 0.0198   | -             |
@@ -69,7 +69,7 @@ Five-fold cross-validation on ASSIST
 | **ASG-CD**    | **0.7283  $\pm$ 0.0222**   | **0.4280   $\pm$ 0.0150**   | **0.7555  $\pm$ 0.0244**   | **0.6383  $\pm$ 0.0207**   |
 
 Five-fold cross-validation on Junyi
-|    | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
+|  **Model**  | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
 |------------|---------|----------|----------|----------|
 | **IRT**    |  0.7641 $\pm$ 0.0042  |  0.4020 $\pm$ 0.0027  |  0.7997 $\pm$ 0.0059  | -          |
 | **MIRT**   |    |    |    | -          |
@@ -85,7 +85,7 @@ Five-fold cross-validation on Junyi
 | **ASG-CD** |  **0.7647 $\pm$ 0.0047** |  **0.4017 $\pm$ 0.0032**  |  **0.7998 $\pm$ 0.0067**  |  **0.6484 $\pm$ 0.0146** |
 
 Five-fold cross-validation on MOOC-Radar
-|    | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
+|  **Model**  | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
 |------------|---------|----------|----------|----------|
 | **IRT**    |    |    |    | -          |
 | **MIRT**   |    |    |    | -          |
@@ -105,6 +105,16 @@ Five-fold cross-validation on MOOC-Radar
 
 #### Experiments about whether ASG-CD can detect randomly generated noises
 We choose the Junyi dataset to conduct this experiment. 
+We find that it is not easy to generate random noise on non-interacted student-exercise pairs. These non-interacted pairs consists of potential correct and incorrect response logs, and we do not know whether a correct/incorrect response log is noisy. 
+Therefore, we randomly choose some existing student-exercise response logs (corresponding to edges in graph) and modify their labels. We conduct experiments on the modified Junyi dataset, and check out whether these modified logs can be detected by ASG-CD. 
+
+|  **Model**  | **noisy logs/all logs** |  **detections/noisy logs** 
+|------------|---------|----------|
+| **ASG-CD** |  10%  |    |    
+| **ASG-CD** |  20%  |    |    
+| **ASG-CD** |  30%  |    |    
+| **ASG-CD** |  40%  |    |   
+| **ASG-CD** |  50%  |    |  
 
 #### Experiments about whether removing W_1 and W_0
 We choose the ASSIST and Junyi datasets to conduct these experiments.
