@@ -44,7 +44,7 @@ python main_our.py
 Note that, we realize the graph aggregation process by torch sparse for our models and baselines. The original codes for RCD is too time-consuming, and sparse matrix multiplication can improve it and achieve the same operation. 
 
 ## (2) Results based on five-fold cross-validation 
-**Considering the time constraints of the rebuttal and the big amount of additional experiments, we will release most results till April 11 (AOE), with the remaining results gradually provided in the repo until April 18.** As we re-split data and conduct five-fold cross-validation, the results may be different from previous paper, but the tendency is similar. 
+**Considering the time constraints of the rebuttal and the amount of additional experiments, we will release most results till April 11 (AOE), with the remaining results gradually provided in the repo until April 18.** As we re-split data and conduct five-fold cross-validation, the results may be different from previous paper, but the tendency is similar. 
 
 We have categorized all the models into two groups. Models in the first group are unable to provide students' comprehension degrees on concepts and can only predict response logs. Models in the second group can simultaneously accomplish these two tasks. We have highlighted the optimal results in each group.
 
@@ -116,7 +116,7 @@ Experiments about whether removing W_1 and W_0 on Junyi dataset
 |    | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
 |------------|---------|----------|----------|----------|
 | **Not removing**    |  0.7647 $\pm$ 0.0047 | 0.4017 $\pm$ 0.0032  |  0.7998 $\pm$ 0.0067  |  0.6484 $\pm$ 0.0146 |
-| **Removing**   |  **0.7668 $\pm$ 0.0033** | **0.4004 $\pm$ 0.0037**  |  **0.8026 $\pm$ 0.0056**  |  **0.6615 $\pm$ 0.0194** |
+| **Removing**   |  **0.7668 $\pm$ 0.0033** | **0.4004 $\pm$ 0.0037**  |  **0.8026 $\pm$ 0.0056**  |  **0.6568 $\pm$ 0.0194** |
 
 Apart from discussions in the rebuttal box, we provide more discussions here. 
 
