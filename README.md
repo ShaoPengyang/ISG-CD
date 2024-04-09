@@ -1,4 +1,4 @@
-## This repo is for KDD submission 2427. 
+# This repo is for KDD submission 2427. 
 
 This repo includes 
 
@@ -10,7 +10,7 @@ This repo includes
 
 (4) Discussions about baselines (including newly added ones, e.g., KSCD, SCD, HAN). 
 
-### (1) Codes for results in the original paper
+## (1) Codes for results in the original paper
 To run all codes, Pytorch (gpu version), networkx, pandas, scikit-learn must be installed. 
 
 Our environment:
@@ -43,7 +43,7 @@ python main_our.py
 
 Note that, we realize the graph aggregation process by torch sparse for our models and baselines. The original codes for RCD is too time-consuming, and sparse matrix multiplication can improve it and achieve the same operation. 
 
-### (2) Results based on five-fold cross-validation 
+## (2) Results based on five-fold cross-validation 
 Considering the time constraints of the rebuttal and the big amount of additional experiments, we will release most results till April 11 (AOE), with the remaining results gradually provided in the repo until April 18. As we re-split data and conduct five-fold cross-validation, the results may be different from previous paper, but the tendency is similar. 
 
 We have categorized all the models into two groups. Models in the first group are unable to provide students' comprehension degrees on concepts and can only predict response logs. Models in the second group can simultaneously accomplish these two tasks. We have highlighted the optimal results in each group.
@@ -98,7 +98,7 @@ Five-fold cross-validation on MOOC-Radar
 | **ASG-CD** |    |    |    |            |
 
 
-### (3) Experiments about whether ASG-CD can detect randomly generated noises & Experiments about whether removing W_1 and W_0
+## (3) Experiments about whether ASG-CD can detect randomly generated noises & Experiments about whether removing W_1 and W_0
 
 #### Experiments about whether ASG-CD can detect randomly generated noises
 We choose the Junyi dataset to conduct this experiment. 
@@ -129,7 +129,7 @@ On the ASSIST dataset, removing these transformation matrices leads to a small d
 Overall, since the effects of removal are small and these transformation matrices are not related to the main focus of the paper, we do not discuss it in our submission. 
 
 
-### (4) Discussions about baselines
+## (4) Discussions about baselines
 First of all, results of these newly added baselines are recorded in ``(2) results based on five-fold cross-validation''. 
 The following part includes introduction to newly-added baselines, and hyper-parameter settings. 
 
