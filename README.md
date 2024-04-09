@@ -2,20 +2,25 @@
 
 This repo includes 
 
-(1) Codes for results in the original paper; 
+1. [**Released Codes**](#1-released-codes)
 
-(2)  Experimental results based on five-fold cross-validation; 
+    [**1.1 environments and how to run codes**](#11-environments-and-how-to-run-codes)
 
-(3) Experiments about whether ASG-CD can detect randomly generated noises & Experiments about whether removing W_1 and W_0;
+    [**1.2 hyper-parameters and settings of baselines**](#12-hyper-parameters-and-settings-of-baselines)
 
-(4) Discussions about baselines (including newly added ones, e.g., KSCD, SCD, HAN). 
+2. [**Experimental results**](#2-experimental-results)
 
-(5) Hyper-parameter settings
+    [**2.1 five-fold cross-validation (including added baselines)**](#21-five-fold-cross-validation-including-added-baselines)
+
+    [**2.2 removing W_1 and W_0**](#22-removing-w_1-and-w_0)
+
+    [**2.3 detecting randomly generated noises**](#23-detecting-randomly-generated-noises)
+
  
 
-## (1) Codes for results in the original paper
-To run all codes, Pytorch (gpu version), networkx, pandas, scikit-learn must be installed. 
+## 1. Released Codes
 
+### 1.1 environments and how to run codes
 Our environment:
 ```
 Python 3.9.7 
@@ -44,15 +49,35 @@ python divide_data.py
 python main_our.py
 ```
 
-Note that, we realize the graph aggregation process by torch sparse for our models and baselines. The original codes for RCD is too time-consuming, and sparse matrix multiplication can improve it and achieve the same operation. 
+### 1.2 hyper-parameters and settings of baselines
+We search the best learning rate in the range of {0.0001,0.0005, 0.001, 0.005, 0.01} **for all models**. 
+For fair comparisons, we set the same embedding dimension to PMF, KaNCD, KSCD, ASG-CD, SCD (128 on ASSIST, 64 on Junyi dataset, 64 on MOOC-Radar dataset).  We set the batch size to 8192 **for all models**. 
+We adopt Xavier to init trainable parameters **for all models**. We set a_range of IRT and MIRT to 1. We find that MIRT would achieve better results when the number of embedding dimension is smaller, therefore, the dimension for MIRT is searched in the range of {4,8,16,32} on three datasets. The hidden dimension of Poslinear layers are 256,128 respectively for neural network based CD models, e.g., NCDM, KaNCD, ASG-CD. Both our proposed ASG-CD and KaNCD adopt GMF as the basic matrix factorization technique. 
 
-## (2) Results based on five-fold cross-validation 
-**Considering the time constraints of the rebuttal and the amount of additional experiments, we will release most results till April 11 (AOE), with the remaining results gradually provided in the repo until April 18.** As we re-split data and conduct five-fold cross-validation, the results may be different from previous paper, but the tendency is similar. 
+**RCD** We realize the graph aggregation process by torch sparse for our models and baselines. The original codes for RCD is too time-consuming, and sparse matrix multiplication can improve it and achieve the same operation. 
+
+
+**KSCD** In a batch, KSCD has students' comprehension degrees (shape: batch size * concept number) and exercise difficulty (shape: batch size * concept number), concept embeddings (shape: concept number * embedding size). By repeating these matrices, KSCD obtains three matrices (batch size * concept number * concept number, batch size * concept number * concept number, batch size * concept number * embedding size).  We find that matrix with the shape of batch size * concept number * concept number is too large to calculate on Junyi dataset. To avoid this, we propose another solution, which can achieve similar performance on other datasets but saves memory. We choose to sum concept embeddings (shape: concept number * embedding size) to a vector (length: embedding size). Then, we repeat it to a matrix (shape: batch size * embedding size). After that, we concatenate two matrices (shape: batch size * embedding size, shape: batch size * concept number). Also, the dimension reduction process is changed to (concept number+embedding size -> concept number). Other operations are the same as KSCD. **We also release this KSCD-variant in junyi-graph/CD/models.py.**
+
+**HAN** This model needs both graph structure and node features. In our paper, each node does not have features; we only consider heterogeneity in the graph structure (i.e., edge heterogeneity). Therefore, we do not consider these models in our initial submission. We agree with the reviewers that analyzing more models is beneficial for our task. To fit our task, we first replace the initial node features&projection with free node embeddings. 
+Second, we define four meta paths, student —>(correctly) exercise <—(correctly) student, exercise —>(correctly) exercise <—(correctly) student, student —>(wrongly) exercise <—(wrongly) student, exercise —>(wrongly) exercise <—(wrongly) student. Two paths are used to update student embeddings, while the other two are for exercise embeddings. 
+Based on node attention, we can obtain four embeddings for a node. HAN introduces a semantic-level attention to combine these embeddings. Finally, we adopt NCDM-style interaction layer (the dimension of node embedding must be the number of concepts, denoted as HAN-CD) to build connections between combined embeddings to predicted response logs. 
+
+The difference between HAN-CD and our proposed ASG-CD lies in that HAN-CD introduces hierarchical attention and that HAN-CD does not apply adaptive learning. 
+
+
+
+## 2. Experimental results
+**Considering the time constraints of the rebuttal and the amount of additional experiments, we will release most results till April 11 (AOE), with the remaining results gradually provided in the repo until April 18.**
+
+### 2.1 five-fold cross-validation (including added baselines)
+
+As we re-split data and conduct five-fold cross-validation, the results may be different from previous paper, but the tendency is similar. Specifically, we split the whole dataset into five folds. We take one fold as testing set in turn, and split the remaining four sets as training&validation sets with ratio of 7:1. 
 
 We have categorized all the models into two groups. Models in the first group are unable to provide students' comprehension degrees on concepts and can only predict response logs. Models in the second group can simultaneously accomplish these two tasks. We have highlighted the optimal results in each group.
 
 
-Five-fold cross-validation on ASSIST
+Table 1 Five-fold cross-validation on ASSIST
 |  **Model**  | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
 |------------|---------|----------|----------|----------|
 | **IRT**    | 0.7072  $\pm$ 0.0294   | 0.4421   $\pm$ 0.0212   | 0.7259  $\pm$ 0.0290   | -             |
@@ -68,7 +93,7 @@ Five-fold cross-validation on ASSIST
 | **HAN-CD** | 0.7257  $\pm$ 0.0229   | 0.4297   $\pm$ 0.0151   | 0.7524  $\pm$ 0.0240   | 0.6348  $\pm$ 0.0185   |
 | **ASG-CD**    | **0.7283  $\pm$ 0.0222**   | **0.4280   $\pm$ 0.0150**   | **0.7555  $\pm$ 0.0244**   | **0.6383  $\pm$ 0.0207**   |
 
-Five-fold cross-validation on Junyi
+Table 2 Five-fold cross-validation on Junyi
 |  **Model**  | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
 |------------|---------|----------|----------|----------|
 | **IRT**    |  0.7641 $\pm$ 0.0042  |  0.4020 $\pm$ 0.0027  |  0.7997 $\pm$ 0.0059  | -          |
@@ -84,7 +109,7 @@ Five-fold cross-validation on Junyi
 | **HAN-CD** |  0.7626 $\pm$ 0.0039 |  0.4031 $\pm$ 0.0031  |  0.7957 $\pm$ 0.0080  |  0.6469 $\pm$ 0.0132 |
 | **ASG-CD** |  **0.7647 $\pm$ 0.0047** |  **0.4017 $\pm$ 0.0032**  |  **0.7998 $\pm$ 0.0067**  |  **0.6484 $\pm$ 0.0146** |
 
-Five-fold cross-validation on MOOC-Radar
+Table 3 Five-fold cross-validation on MOOC-Radar
 |  **Model**  | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
 |------------|---------|----------|----------|----------|
 | **IRT**    |    |    |    | -          |
@@ -101,22 +126,7 @@ Five-fold cross-validation on MOOC-Radar
 | **ASG-CD** |    |    |    |            |
 
 
-## (3) Experiments about whether ASG-CD can detect randomly generated noises & Experiments about whether removing W_1 and W_0
-
-#### Experiments about whether ASG-CD can detect randomly generated noises
-We choose the Junyi dataset to conduct this experiment. 
-We find that it is not easy to generate random noise on non-interacted student-exercise pairs. These non-interacted pairs consists of potential correct and incorrect response logs, and we do not know whether a correct/incorrect response log is noisy. 
-Therefore, we randomly choose some existing student-exercise response logs (corresponding to edges in graph) and modify their labels. We conduct experiments on the modified Junyi dataset, and check out whether these modified logs can be detected by ASG-CD. 
-
-|  **Model**  | **noisy logs/all logs** |  **detections/noisy logs** 
-|------------|---------|----------|
-| **ASG-CD** |  10%  |    |    
-| **ASG-CD** |  20%  |    |    
-| **ASG-CD** |  30%  |    |    
-| **ASG-CD** |  40%  |    |   
-| **ASG-CD** |  50%  |    |  
-
-#### Experiments about whether removing W_1 and W_0
+### 2.2 removing W_1 and W_0
 We choose the ASSIST and Junyi datasets to conduct these experiments.
 
 Experiments about whether removing W_1 and W_0 on ASSIST dataset
@@ -124,6 +134,7 @@ Experiments about whether removing W_1 and W_0 on ASSIST dataset
 |------------|---------|----------|----------|----------|
 | **Not removing**    | **0.7283  $\pm$ 0.0222**   | **0.4280   $\pm$ 0.0150**   | **0.7555  $\pm$ 0.0244**   | **0.6383  $\pm$ 0.0207**   |
 | **Removing**   |  0.7224 $\pm$ 0.0268 |  0.4316 $\pm$ 0.0166  |  0.7482 $\pm$ 0.274  |  0.6331 $\pm$ 0.0331 |
+
 
 Experiments about whether removing W_1 and W_0 on Junyi dataset
 |    | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
@@ -143,45 +154,22 @@ Overall, since the effects of removal are small and these transformation matrice
 Due to reviewers' requests, we are willing to provide experimental results in above two tables. 
 
 
-## (4) Discussions about baselines
-First of all, results of these newly added baselines are recorded in ``(2) results based on five-fold cross-validation''. 
-The following part includes introduction to newly-added baselines, and hyper-parameter settings. 
+### 2.3 detecting randomly generated noises
 
-#### Newly added baselines during the rebuttal process
-**1. HAN.**
+We choose the Junyi dataset to conduct this experiment. 
+We find that it is not easy to generate random noise on non-interacted student-exercise pairs. These non-interacted pairs consists of potential correct and incorrect response logs, and we do not know whether a correct/incorrect response log is noisy. 
+Therefore, we randomly choose some existing student-exercise response logs (corresponding to edges in graph) and modify their labels. We conduct experiments on the modified Junyi dataset, and check out whether these modified logs can be detected by ASG-CD. 
 
-This model needs both graph structure and node features. In our paper, each node does not have features; we only consider heterogeneity in the graph structure (i.e., edge heterogeneity). Therefore, we do not consider these models in our initial submission. 
+Table 4 
+|  **Model**  | **noisy logs/all logs** |  **detections/noisy logs** 
+|------------|---------|----------|
+| **ASG-CD** |  5%  |  90.2%  | 
+| **ASG-CD** |  10%  |  85.7%  |    
+| **ASG-CD** |  20%  |  79.4%  |    
+| **ASG-CD** |  30%  |  65.5%  |      
 
-We agree with the reviewers that analyzing more models is beneficial for our task. To fit our task, we first replace the initial node features&projection with free node embeddings. 
-Second, we define four meta paths, student —>(correctly) exercise <—(correctly) student, exercise —>(correctly) exercise <—(correctly) student, student —>(wrongly) exercise <—(wrongly) student, exercise —>(wrongly) exercise <—(wrongly) student. Two paths are used to update student embeddings, while the other two are for exercise embeddings. 
-Based on node attention, we can obtain four embeddings for a node. HAN introduces a semantic-level attention to combine these embeddings. Finally, we adopt NCDM-style interaction layer (the dimension of node embedding must be the number of concepts, denoted as HAN-CD) to build connections between combined embeddings to predicted response logs. 
+We have observed that when artificially adding noise edges at a rate of 5%, our model can relatively accurately distinguish the noise. However, as the number of noise edges increases, adaptive learning becomes less effective in accurately identifying the noise. 
 
-In fact, HAN-CD is very similar to our ASG-CD. HAN can handle edge and feature heterogeneity at the same time, but there are no features. Consequently, the transfered solution is similar to GCMC used in our paper. 
-For example, both them output the final aggregation layer rather than stacking all aggregation layers. The differences lie in that HAN-CD introduces hierarchical attention and that HAN-CD does not apply adaptive learning. 
-Therefore, their performance are quite close. 
-
-**2. KSCD.**
-
-KSCD and KaNCD both adopts the matrix factorization techniques. The only difference between KSCD and KaNCD is the diagnositic layer that maps student/exercise representations to predicted response logs. As we already includes KaNCD, we do not include KSCD in our initial submission. 
-
-We agree with reviewers that adding KSCD would be better. During the rebuttal process, we will add it as a baseline. Note that, the interaction layer of KSCD has several steps. First, in a batch, KSCD has students' comprehension degrees (shape: batch size * concept number) and exercise difficulty (shape: batch size * concept number), concept embeddings (shape: concept number * embedding size). 
-Second, by repeating these matrices, KSCD obtains three matrices (batch size * concept number * concept number, batch size * concept number * concept number, batch size * concept number * embedding size). Third, KSCD uses torch.cat to concatenate these matrices (batch size * concept number * concept number+embedding size), and combine all these representations.  Finally, KSCD reduces the 2-th dimension from (concept number+embedding size) to 1. 
-
-However, we find that matrix with the shape of batch size * concept number * concept number is too large to calculate on Junyi dataset. To avoid this, we propose another solution, which can achieve similar performance on other datasets but saves memory. We choose to sum concept embeddings (shape: concept number * embedding size) to a vector (length: embedding size). Then, we repeat it to a matrix (shape: batch size * embedding size). After that, we concatenate two matrices (shape: batch size * embedding size, shape: batch size * concept number). Also, the dimension reduction process is changed to (concept number+embedding size -> concept number). Other operations are the same as KSCD. We also release this KSCD-variant in junyi-graph/CD/models.py. 
-
-**3. SCD.**
-
-First, although SCD is named after CD, it does not have the ability to provide students' proficiency levels on each concepts. It can only be used to predict response logs. Second, SCD has similar shortcomings as RCD, as they both do not distinguish edges of correct/wrong response logs. As we have choosen RCD as a baseline, we do not add SCD in our submission. 
-
-We agree with reviewers that adding SCD would be better. During the rebuttal process, we will add it as a baseline. The dimension of SCD's embeddings is the same as PMF, KaNCD, KSCD, ASG-CD ... （these models utilize latent embdeddings to represent students and exercises). In detail, the dimension is 128 on ASSIST, 64 on Junyi dataset, 64 on MOOC-Radar dataset. 
-
-## (5) Hyper-parameter settings
-During the rebuttal, we have conducted five-fold cross validation.
-We search the best learning rate in the range of {0.0001,0.0005, 0.001, 0.005, 0.01} **for all models**. 
-For fair comparisons, we set the same embedding dimension to PMF, KaNCD, KSCD, ASG-CD, SCD (128 on ASSIST, 64 on Junyi dataset, 64 on MOOC-Radar dataset).  We set the batch size to 8192 **for all models**. 
-We adopt Xavier to init trainable parameters **for all models**. 
-
-We set a_range of IRT and MIRT to 1. We find that MIRT would achieve better results when the number of embedding dimension is smaller, therefore, the dimension for MIRT is searched in the range of {4,8,16,32} on three datasets. The hidden dimension of Poslinear layers are 256,128 respectively for neural network based CD models, e.g., NCDM, KaNCD, ASG-CD. Both our proposed ASG-CD and KaNCD adopt GMF as the basic matrix factorization technique. 
-
+The observed trend can be attributed to the approach we used to generate noise. In our design, we created noise by randomly selecting existing response logs and flipping their labels. As the quantity of noise increases, the data distribution of the main data gradually shifting towards the noise. In adaptive learning, the principle of identifying noise relies on detecting response logs that deviate significantly from the distribution of the main data, which means that we cannot effectively detect noise when the distribution of the main data has changed to noise.  
 
 <!--Finally, some codes are borrowed from [source1](https://github.com/HFUT-LEC/EduStudio/blob/68611db64e42bebf33be66fa0126de0269b07f74/edustudio/model/CD), and [source2](https://github.com/dmlc/dgl/blob/master/examples/pytorch/han/model_hetero.py] (https://github.com/bigdata-ustc/EduCDM). -->
