@@ -21,7 +21,7 @@ As we re-split data and conduct five-fold cross-validation, the results may be d
 We have categorized all the models into two groups. Models in the first group are unable to provide students' comprehension degrees on concepts and can only predict response logs. Models in the second group can simultaneously accomplish these two tasks. We have highlighted the optimal results in each group.
 
 
-Table 1 Five-fold cross-validation on ASSIST
+**Table 1 Five-fold cross-validation on ASSIST**
 |  **Model**  | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
 |------------|---------|----------|----------|----------|
 | **IRT**    | 0.7072  $\pm$ 0.0294   | 0.4421   $\pm$ 0.0212   | 0.7259  $\pm$ 0.0290   | -             |
@@ -37,7 +37,7 @@ Table 1 Five-fold cross-validation on ASSIST
 | **HAN-CD** | 0.7257  $\pm$ 0.0229   | 0.4297   $\pm$ 0.0151   | 0.7524  $\pm$ 0.0240   | 0.6348  $\pm$ 0.0185   |
 | **ASG-CD**    | **0.7283  $\pm$ 0.0222**   | **0.4280   $\pm$ 0.0150**   | **0.7555  $\pm$ 0.0244**   | **0.6383  $\pm$ 0.0207**   |
 
-Table 2 Five-fold cross-validation on Junyi
+**Table 2 Five-fold cross-validation on Junyi**
 |  **Model**  | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
 |------------|---------|----------|----------|----------|
 | **IRT**    |  0.7641 $\pm$ 0.0042  |  0.4020 $\pm$ 0.0027  |  0.7997 $\pm$ 0.0059  | -          |
@@ -53,7 +53,7 @@ Table 2 Five-fold cross-validation on Junyi
 | **HAN-CD** |  0.7626 $\pm$ 0.0039 |  0.4031 $\pm$ 0.0031  |  0.7957 $\pm$ 0.0080  |  0.6469 $\pm$ 0.0132 |
 | **ASG-CD** |  **0.7647 $\pm$ 0.0047** |  **0.4017 $\pm$ 0.0032**  |  **0.7998 $\pm$ 0.0067**  |  **0.6484 $\pm$ 0.0146** |
 
-Table 3 Five-fold cross-validation on MOOC-Radar
+**Table 3 Five-fold cross-validation on MOOC-Radar**
 |  **Model**  | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
 |------------|---------|----------|----------|----------|
 | **IRT**    |    |    |    | -          |
@@ -73,14 +73,14 @@ Table 3 Five-fold cross-validation on MOOC-Radar
 ### 1.2 removing W_1 and W_0
 We choose the ASSIST and Junyi datasets to conduct these experiments.
 
-Experiments about whether removing W_1 and W_0 on ASSIST dataset
+**Table 4 Experiments about whether removing W_1 and W_0 on ASSIST dataset**
 |    | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
 |------------|---------|----------|----------|----------|
 | **Not removing**    | **0.7283  $\pm$ 0.0222**   | **0.4280   $\pm$ 0.0150**   | **0.7555  $\pm$ 0.0244**   | **0.6383  $\pm$ 0.0207**   |
 | **Removing**   |  0.7224 $\pm$ 0.0268 |  0.4316 $\pm$ 0.0166  |  0.7482 $\pm$ 0.274  |  0.6331 $\pm$ 0.0331 |
 
 
-Experiments about whether removing W_1 and W_0 on Junyi dataset
+**Table 5 Experiments about whether removing W_1 and W_0 on Junyi dataset**
 |    | **ACC** |  **RMSE** |  **AUC** |  **DOA** |
 |------------|---------|----------|----------|----------|
 | **Not removing**    |  0.7647 $\pm$ 0.0047 | 0.4017 $\pm$ 0.0032  |  0.7998 $\pm$ 0.0067  |  0.6484 $\pm$ 0.0146 |
@@ -104,7 +104,7 @@ We choose the Junyi dataset to conduct this experiment.
 We find that it is not easy to generate random noise on non-interacted student-exercise pairs. These non-interacted pairs consists of potential correct and incorrect response logs, and we do not know whether a correct/incorrect response log is noisy. 
 Therefore, we randomly choose some existing student-exercise response logs (corresponding to edges in graph) and modify their labels. We conduct experiments on the modified Junyi dataset, and check out whether these modified logs can be detected by ASG-CD. 
 
-Table 4 
+**Table 6 Detections about random generated noises**
 |  **Model**  | **noisy logs/all logs** |  **detections/noisy logs** 
 |------------|---------|----------|
 | **ASG-CD** |  5%  |  90.2%  | 

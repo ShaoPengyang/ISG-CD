@@ -2,7 +2,7 @@
 
 This repo includes 
 
-1. [**Released Codes**](https://anonymous.4open.science/r/KDD-submit-CBC8/CODES.md)
+1. [**Released Codes**](https://anonymous.4open.science/r/KDD-submit-CBC8/Codes.md)
 
     **1.1 environments and how to run codes**
 
