@@ -104,7 +104,7 @@ We choose the Junyi dataset to conduct this experiment.
 We find that it is not easy to generate random noise on non-interacted student-exercise pairs. These non-interacted pairs consists of potential correct and incorrect response logs, and we do not know whether a correct/incorrect response log is noisy. 
 Therefore, we randomly choose some existing student-exercise response logs (corresponding to edges in graph) and modify their labels. We conduct experiments on the modified Junyi dataset, and check out whether these modified logs can be detected by ASG-CD. 
 
-**Table 6 Detections about random generated noises**
+**Table 6 Detections about random generated noises on Junyi**
 |  **Model**  | **noisy logs/all logs** |  **detections/noisy logs** 
 |------------|---------|----------|
 | **ASG-CD** |  5%  |  90.2%  | 
@@ -115,5 +115,6 @@ Therefore, we randomly choose some existing student-exercise response logs (corr
 We have observed that when artificially adding noise edges at a rate of 5%, our model can relatively accurately distinguish the noise. However, as the number of noise edges increases, adaptive learning becomes less effective in accurately identifying the noise. 
 
 The observed trend can be attributed to the approach we used to generate noise. In our design, we created noise by randomly selecting existing response logs and flipping their labels. As the quantity of noise increases, the data distribution of the main data gradually shifting towards the noise. In adaptive learning, the principle of identifying noise relies on detecting response logs that deviate significantly from the distribution of the main data, which means that we cannot effectively detect noise when the distribution of the main data has changed to noise.  
+
 
 <!--Finally, some codes are borrowed from [source1](https://github.com/HFUT-LEC/EduStudio/blob/68611db64e42bebf33be66fa0126de0269b07f74/edustudio/model/CD), and [source2](https://github.com/dmlc/dgl/blob/master/examples/pytorch/han/model_hetero.py] (https://github.com/bigdata-ustc/EduCDM). -->
