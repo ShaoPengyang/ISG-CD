@@ -1,4 +1,4 @@
-# This repo is for KDD submission 2427. 
+# This repo is for "Exploring Heterogeneity and Uncertainty for Graph-based Cognitive Diagnosis Models in Intelligent Education". 
 
 This repo includes 
 
