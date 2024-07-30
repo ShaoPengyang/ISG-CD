@@ -14,8 +14,9 @@ import torch.utils.data as data
 from collections import defaultdict
 from torch.autograd import Variable
 
-train_data_json = '../data/junyi/train_set.json'
-test_data_json = '../data/junyi/test_set.json'
+train_data_json = '../data/junyi/train_set1.json'
+test_data_json = '../data/junyi/test_set1.json'
+eval_data_json = '../data/junyi/eval_set1.json'
 
 def obtain_adjency_matrix(args):
     with open(train_data_json, encoding='utf8') as i_f:
@@ -85,6 +86,9 @@ class EduData(data.Dataset):
         if type == 'train':
             self.data_file = train_data_json
             self.type = 'train'
+        elif type == 'eval':
+            self.data_file = eval_data_json
+            self.type = 'eval'
         elif type == 'predict':
             self.data_file = test_data_json
             self.type = 'predict'

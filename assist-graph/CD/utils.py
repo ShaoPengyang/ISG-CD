@@ -34,47 +34,10 @@ class CommonArgParser(argparse.ArgumentParser):
                           help='The number for knowledge concept.')
         self.add_argument('--student_n', type=int, default=student_n,
                           help='The number for student.')
-        self.add_argument('-g','--gpu', type=int, default=0,
-                          help='The id of gpu, e.g. 0.')
-        self.add_argument('-m','--modeling_setting', type=int, default=0,
-                          help='The id of experimental setting, e.g. 0.')
-        self.add_argument('--epoch_n', type=int, default=4,
-                          help='The epoch number of training')
-        self.add_argument('--lr', type=float, default=0.005,
-                          help='Learning rate')
-        self.add_argument('--test', action='store_true',
-                          help='Evaluate the model on the testing set in the training process.')
-        self.add_argument('--x_dims', type=int, default=1,  # changed here
-                            help='The number of input dimensions: default 1.')
-        self.add_argument('--z_dims', type=int, default=1,
-                            help='The number of latent variable dimensions: default the same as variable size.')
-        self.add_argument('--graph_threshold', type=float, default=0.3,  # 0.3 is good, 0.2 is error prune
-                            help='threshold for learned adjacency matrix binarization')
-        self.add_argument('--tau_A', type=float, default=0.0,
-                            help='coefficient for L-1 norm of A.')
-        self.add_argument('--lambda_A', type=float, default=0.,
-                            help='coefficient for DAG constraint h(A).')
-        self.add_argument('--c_A', type=float, default=1,
-                            help='coefficient for absolute value h(A).')
-        self.add_argument('--encoder-dropout', type=float, default=0.0,
-                            help='Dropout rate (1 - keep probability).')
-        self.add_argument('--decoder-dropout', type=float, default=0.0,
-                            help='Dropout rate (1 - keep probability).')
-        self.add_argument('--encoder-hidden', type=int, default=64,
-                            help='Number of hidden units.')
-        self.add_argument('--decoder-hidden', type=int, default=64,
-                            help='Number of hidden units.')
-
-# def construct_local_map(args):
-#     local_map = {
-#         'directed_g': build_graph('direct', args.knowledge_n),
-#         'undirected_g': build_graph('undirect', args.knowledge_n),
-#         'k_from_e': build_graph('k_from_e', args.knowledge_n + args.exer_n),
-#         'e_from_k': build_graph('e_from_k', args.knowledge_n + args.exer_n),
-#         'u_from_e': build_graph('u_from_e', args.student_n + args.exer_n),
-#         'e_from_u': build_graph('e_from_u', args.student_n + args.exer_n),
-#     }
-#     return local_map
+        self.add_argument('--gpu', type=int, default=0,
+                          help='gpu id')
+        self.add_argument('--beta', type=float, default=1,
+                          help='The number of balancing parameters.')
 
 def doa_report(user, item, know_id, predicted_score, predicted_theta):
     '''

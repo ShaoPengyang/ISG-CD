@@ -16,8 +16,9 @@ from collections import defaultdict
 from torch.autograd import Variable
 
 
-train_data_json = '../data/ASSIST/train_set.json'
-test_data_json = '../data/ASSIST/test_set.json'
+train_data_json = '../data/ASSIST/train_set1.json'
+eval_data_json = '../data/ASSIST/eval_set1.json'
+test_data_json = '../data/ASSIST/test_set1.json'
 
 
 def obtain_adjency_matrix(args):
@@ -93,6 +94,9 @@ class EduData(data.Dataset):
         elif type == 'predict':
             self.data_file = test_data_json
             self.type = 'predict'
+        elif type == 'eval':
+            self.data_file = eval_data_json
+            self.type = 'eval'
         else:
             assert False, 'type can only be selected from train or predict'
         with open(self.data_file, encoding='utf8') as i_f:

@@ -1,19 +1,29 @@
-# This repo is for "Exploring Heterogeneity and Uncertainty for Graph-based Cognitive Diagnosis Models in Intelligent Education". 
+# This repo is for KDD submission Exploring Heterogeneity and Uncertainty for Graph-based Cognitive Diagnosis Models in Intelligent Education. 
 
-This repo includes 
-
-1. [**Released Codes**](https://anonymous.4open.science/r/KDD-submit-CBC8/Code.md)
-
-    **1.1 environments and how to run codes**
-
-    **1.2 hyper-parameters and settings of baselines**
-
-2. [**Experimental results**](https://anonymous.4open.science/r/KDD-submit-CBC8/Experiments.md)
-
-    **2.1 five-fold cross-validation (including added baselines)**
-
-    **2.2 removing W_1 and W_0**
-
-    **2.3 detecting randomly generated noises**
-
- 
+Our environment:
+```
+Python 3.9.7 
+torch 2.0.1
+pandas 1.3.4
+scikit-learn 0.24.2
+networkx 2.6.3
+```
+#### Assist
+```
+cd assist-graph/CD
+python main_our.py
+```
+#### Junyi
+```
+cd junyi-graph/CD
+python main_our.py
+```
+#### Mooc-radar
+The MOOC-Radar is too big to upload via Github. 
+if you want to run codes for mooc-radar, please first download the dataset from [link](https://cloud.tsinghua.edu.cn/d/5443ee05152344c79419/), and put the files into "mooc-graph/data/coarse/" (Please mkdir first).
+Then, you should run
+```
+cd mooc-graph/CD
+python divide_data.py
+python main_our.py
+```
