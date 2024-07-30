@@ -11,8 +11,6 @@ import networkx as nx
 import pickle
 from torch.autograd import Variable
 from data_loader import *
-# train_data_json = '../data/coarse/train_set.npy'
-# test_data_json = '../data/coarse/test_set.npy'
 
 def kernel_matrix(x, sigma):
     return torch.exp((torch.matmul(x, x.transpose(0,1)) - 1) / sigma)    ### real_kernel

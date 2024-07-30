@@ -15,8 +15,9 @@ import torch.utils.data as data
 from collections import defaultdict
 from torch.autograd import Variable
 
-train_data_json = '../data/coarse/train_set.npy'
-test_data_json = '../data/coarse/test_set.npy'
+train_data_json = '../data/coarse/train_set1.npy'
+test_data_json = '../data/coarse/test_set1.npy'
+eval_data_json = '../data/coarse/eval_set1.npy'
 item2knowledge_path = "../data/coarse/item2knowledge.npy"
 item2knowledge = np.load(item2knowledge_path, allow_pickle = True).item()
 
@@ -82,67 +83,6 @@ def readTrainSparseMatrix(args, set_matrix,u_d,i_d, is_user):
     user_items_matrix_v=torch.cuda.FloatTensor(user_items_matrix_v)
     return torch.sparse.FloatTensor(user_items_matrix_i.t(), user_items_matrix_v)
 
-# def obtain_adjency_matrix(args):
-#     data = np.load(train_data_json, allow_pickle=True)
-#     train_data_user_score1,train_data_user_score0 = defaultdict(set), defaultdict(set)
-#     train_data_item_score1,train_data_item_score0 = defaultdict(set), defaultdict(set)
-#     for idx, log in enumerate(data):
-#         u_id = log[0] -1
-#         i_id = log[1] -1
-#         if log[2] == 1:
-#             train_data_user_score1[u_id].add(int(i_id))
-#             train_data_item_score1[int(i_id)].add(u_id)
-#         elif log[2] == 0:
-#             train_data_user_score0[u_id].add(int(i_id))
-#             train_data_item_score0[int(i_id)].add(u_id)
-#         else:
-#             assert False, 'rating must be 1 or 0.'
-#
-#     u_d_1 = readD(args, train_data_user_score1, args.student_n)
-#     i_d_1 = readD(args, train_data_item_score1, args.exer_n)
-#     u_d_0 = readD(args, train_data_user_score0, args.student_n)
-#     i_d_0 = readD(args, train_data_item_score0, args.exer_n)
-#     sparse_u_i_1 = readTrainSparseMatrix(args, train_data_user_score1,u_d_1, i_d_1,  True)
-#     sparse_i_u_1 = readTrainSparseMatrix(args, train_data_item_score1,u_d_1, i_d_1, False)
-#     sparse_u_i_0 = readTrainSparseMatrix(args, train_data_user_score0,u_d_0, i_d_0, True)
-#     sparse_i_u_0 = readTrainSparseMatrix(args, train_data_item_score0,u_d_0, i_d_0, False)
-#
-#     return [u_d_1,i_d_1,sparse_u_i_1,sparse_i_u_1], [u_d_0, i_d_0, sparse_u_i_0, sparse_i_u_0]
-#
-#
-# def readD(args, set_matrix,num_):
-#     user_d=np.zeros(num_)
-#     for i in range(num_):
-#         if len(set_matrix[i]) != 0:
-#             len_set=1.0/(len(set_matrix[i]))
-#             user_d[i] = len_set
-#     return user_d
-#
-#
-# def readTrainSparseMatrix(args, set_matrix,u_d,i_d, is_user):
-#     user_items_matrix_i=[]
-#     user_items_matrix_v=[]
-#     exer_num = args.exer_n
-#     student_n = args.student_n
-#     if is_user:
-#         d_i=u_d
-#         d_j=i_d
-#         user_items_matrix_i.append([student_n-1, exer_num-1])
-#         user_items_matrix_v.append(0)
-#     else:
-#         d_i=i_d
-#         d_j=u_d
-#         user_items_matrix_i.append([exer_num - 1, student_n - 1])
-#         user_items_matrix_v.append(0)
-#     for i in set_matrix:
-#         for j in set_matrix[i]:
-#             user_items_matrix_i.append([i,j])
-#             d_i_j=np.sqrt(d_i[i]*d_j[j])
-#             user_items_matrix_v.append(d_i_j)
-#     user_items_matrix_i=torch.cuda.LongTensor(user_items_matrix_i)
-#     user_items_matrix_v=torch.cuda.FloatTensor(user_items_matrix_v)
-#     return torch.sparse.FloatTensor(user_items_matrix_i.t(), user_items_matrix_v)
-
 class EduData(data.Dataset):
     def __init__(self, type='train'):
         super(EduData, self).__init__()
@@ -152,6 +92,9 @@ class EduData(data.Dataset):
         elif type == 'predict':
             self.data_file = test_data_json
             self.type = 'predict'
+        elif type == 'eval':
+            self.data_file = eval_data_json
+            self.type = 'eval'
         else:
             assert False, 'type can only be selected from train or predict'
         self.data = np.load(self.data_file, allow_pickle=True)
