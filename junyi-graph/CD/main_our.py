@@ -41,27 +41,48 @@ def train(args):
     net = net.to(device)
     optimizer_net = optim.Adam(net.parameters(), lr=0.0005)
 
-    # 18
-    for epoch in range(20):
+        for epoch in range(5):
         net.train()
-        running_loss = []
-        running_loss2 = []
         for idx, (input_stu_ids, input_exer_ids, kid, labels) in enumerate(train_loader):
             input_stu_ids = input_stu_ids.cuda()
             input_exer_ids = input_exer_ids.cuda()
             kid = kid.cuda().long()
             labels = labels.cuda().float()
             optimizer_net.zero_grad()
-            edu_loss, ib_loss = net.forward(input_stu_ids, input_exer_ids,kid, labels)
+            edu_loss, ib_loss = net.forward(input_stu_ids, input_exer_ids, kid, labels, detach_choice=True, pre_train=False)
+            loss = edu_loss
+            loss.backward()
+            optimizer_net.step()
+
+    for epoch in range(30):
+        net.train()
+        net.chosen_parameter(False)
+        for idx, (input_stu_ids, input_exer_ids, kid, labels) in enumerate(train_loader):
+            input_stu_ids = input_stu_ids.cuda()
+            input_exer_ids = input_exer_ids.cuda()
+            kid = kid.cuda().long()
+            labels = labels.cuda().float()
+            optimizer_net.zero_grad()
+            edu_loss, ib_loss = net.forward(input_stu_ids, input_exer_ids, kid, labels)
             loss = edu_loss + ib_loss
             loss.backward()
             optimizer_net.step()
-            running_loss.append(edu_loss.item())
-            running_loss2.append(ib_loss.item())
 
-        print("epoch:" + str(epoch) + "\t edu:" + str(round(np.mean(running_loss),4)) + "\t ib:" + str(round(np.mean(running_loss2),4)))
-        predict(args, net,  eval_loader, epoch, best_auc)
-        predict(args, net,  test_loader, epoch, best_auc)
+        net.chosen_parameter(True)
+        for idx, (input_stu_ids, input_exer_ids, kid, labels) in enumerate(train_loader):
+            input_stu_ids = input_stu_ids.cuda()
+            input_exer_ids = input_exer_ids.cuda()
+            kid = kid.cuda().long()
+            labels = labels.cuda().float()
+            optimizer_net.zero_grad()
+            edu_loss, ib_loss = net.forward(input_stu_ids, input_exer_ids, kid, labels, detach_choice=True)
+            loss = edu_loss
+            loss.backward()
+            optimizer_net.step()
+
+        print("epoch:" + str(epoch))
+        predict(args, net, eval_loader, epoch, best_auc)
+        predict(args, net, test_loader, epoch, best_auc)
 
 
 
@@ -86,7 +107,7 @@ def predict(args, net, test_loader, epoch, best_auc):
             # output = net.forward(input_stu_ids, input_exer_ids)
             output = output.view(-1)
             predicted_scores.extend(labels.to(torch.device('cpu')).tolist())
-            correct_count += ((output >= 0.5) == labels).sum()
+            correct_count += ((output >= 0.5) == labels).sum().item()
             exer_count += len(labels)
             pred_all += output.to(torch.device('cpu')).tolist()
             label_all += labels.to(torch.device('cpu')).tolist()
