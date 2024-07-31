@@ -8,7 +8,7 @@ pandas 1.3.4
 scikit-learn 0.24.2
 networkx 2.6.3
 ```
-#### Assist
+#### ASSIST
 ```
 cd assist-graph/CD
 python main_our.py

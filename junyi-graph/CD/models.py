@@ -62,6 +62,29 @@ class our_adaptive(nn.Module):
                 nn.init.xavier_normal_(param)
         self.graph_init(args)
 
+    def chosen_parameter(self, sign):
+        if sign == True:
+            oppo = False
+        else:
+            oppo = True
+        self.student_emb.weight.requires_grad = sign
+        self.student_emb_b.weight.requires_grad = sign
+        self.exercise_emb.weight.requires_grad = sign
+        self.exercise_emb_b.weight.requires_grad = sign
+        self.knowledge_emb.weight.requires_grad = sign
+        self.e_discrimination.weight.requires_grad = sign
+        self.prednet_full1.weight.requires_grad = sign
+        self.prednet_full1.bias.requires_grad = sign
+        self.prednet_full2.weight.requires_grad = sign
+        self.prednet_full2.bias.requires_grad = sign
+        self.prednet_full3.weight.requires_grad = sign
+        self.prednet_full3.bias.requires_grad = sign
+
+        self.linear_1_l1.weight.requires_grad = oppo
+        self.linear_2_l1.weight.requires_grad = oppo
+        self.linear_1_l0.weight.requires_grad = oppo
+        self.linear_2_l0.weight.requires_grad = oppo
+
     def graph_init(self, args):
         with open(train_data_json, encoding='utf8') as i_f:
             data = json.load(i_f)
@@ -93,9 +116,10 @@ class our_adaptive(nn.Module):
         self.user_item_matrix_0 = sparse_u_i_0.cuda()
         self.item_user_matrix_0 = sparse_i_u_0.cuda()
 
-    def graph_learner(self, user_emb, item_emb):
+    def graph_learner(self, user_emb, item_emb, detach_choice=False):
         # pdb.set_trace()
         temperature = 0.2
+        control = 0.3
         user_ids, item_ids = self.user_item_matrix_1._indices()[0, :], self.user_item_matrix_1._indices()[1, :]
         row_emb = user_emb.weight[user_ids].detach()
         col_emb = item_emb.weight[item_ids].detach()
@@ -105,12 +129,29 @@ class our_adaptive(nn.Module):
         eps = torch.rand(logit.shape).cuda()
         mask_gate_input = torch.log(eps) - torch.log(1 - eps)
         mask_gate_input = (logit + mask_gate_input)  / temperature
-        mask_gate_input = torch.sigmoid(mask_gate_input)
-        weights = mask_gate_input #+ self.edge_bias[1]
+        mask_gate_input = control * torch.sigmoid(mask_gate_input)
+        if detach_choice:
+            weights = mask_gate_input.detach() + (1-control)
+        else:
+            weights = mask_gate_input + (1-control)
         masked_user_item_matrix_1 = torch.sparse.FloatTensor(self.user_item_matrix_1._indices(),
                                                              self.user_item_matrix_1._values() * weights)  # 矩阵的size，indices都没变，就改了矩阵的值。
         masked_user_item_matrix_1 = masked_user_item_matrix_1.coalesce().cuda()
 
+        item_ids,user_ids = self.item_user_matrix_1._indices()[0, :], self.item_user_matrix_1._indices()[1, :]
+        row_emb = user_emb.weight[user_ids].detach()
+        col_emb = item_emb.weight[item_ids].detach()
+        out_layer1 = self.activate(self.linear_1_l1(torch.cat([row_emb, col_emb], dim=1)))
+        logit = self.linear_2_l1(out_layer1)
+        logit = logit.view(-1)
+        eps = torch.rand(logit.shape).cuda()
+        mask_gate_input = torch.log(eps) - torch.log(1 - eps)
+        mask_gate_input = (logit + mask_gate_input) / temperature
+        mask_gate_input = control * torch.sigmoid(mask_gate_input)
+        if detach_choice:
+            weights = mask_gate_input.detach() + (1-control)
+        else:
+            weights = mask_gate_input + (1-control)
         masked_item_user_matrix_1 = torch.sparse.FloatTensor(self.item_user_matrix_1._indices(),
                                                              self.item_user_matrix_1._values() * weights)  # 矩阵的size，indices都没变，就改了矩阵的值。
         masked_item_user_matrix_1 = masked_item_user_matrix_1.coalesce().cuda()
@@ -124,12 +165,29 @@ class our_adaptive(nn.Module):
         eps = torch.rand(logit.shape).cuda()
         mask_gate_input = torch.log(eps) - torch.log(1 - eps)
         mask_gate_input = (logit + mask_gate_input) / temperature
-        mask_gate_input = torch.sigmoid(mask_gate_input)
-        weights = mask_gate_input #+ self.edge_bias[0]
+        mask_gate_input = control * torch.sigmoid(mask_gate_input)
+        if detach_choice:
+            weights = mask_gate_input.detach() + (1-control)
+        else:
+            weights = mask_gate_input + (1-control)
         masked_user_item_matrix_0 = torch.sparse.FloatTensor(self.user_item_matrix_0._indices(),
                                                              self.user_item_matrix_0._values() * weights)  # 矩阵的size，indices都没变，就改了矩阵的值。
         masked_user_item_matrix_0 = masked_user_item_matrix_0.coalesce().cuda()
 
+        item_ids, user_ids = self.item_user_matrix_0._indices()[0, :], self.item_user_matrix_0._indices()[1, :]
+        row_emb = user_emb.weight[user_ids].detach()
+        col_emb = item_emb.weight[item_ids].detach()
+        out_layer1 = self.activate(self.linear_1_l0(torch.cat([row_emb, col_emb], dim=1)))
+        logit = self.linear_2_l0(out_layer1)
+        logit = logit.view(-1)
+        eps = torch.rand(logit.shape).cuda()
+        mask_gate_input = torch.log(eps) - torch.log(1 - eps)
+        mask_gate_input = (logit + mask_gate_input) / temperature
+        mask_gate_input = control * torch.sigmoid(mask_gate_input)
+        if detach_choice:
+            weights = mask_gate_input.detach() + (1-control)
+        else:
+            weights = mask_gate_input + (1-control)
         masked_item_user_matrix_0 = torch.sparse.FloatTensor(self.item_user_matrix_0._indices(),
                                                              self.item_user_matrix_0._values() * weights)  # 矩阵的size，indices都没变，就改了矩阵的值。
         masked_item_user_matrix_0 = masked_item_user_matrix_0.coalesce().cuda()
@@ -155,14 +213,17 @@ class our_adaptive(nn.Module):
         exer_emb = torch.mean(exer_emb, dim=1)
         return stu_emb, exer_emb
 
-    def forward(self, stu_id, input_exercise, input_knowledge_point, labels):
+    def forward(self, stu_id, input_exercise, input_knowledge_point, labels, detach_choice=False, pre_train=False):
         masked_user_item_matrix_1, masked_item_user_matrix_1, masked_user_item_matrix_0, masked_item_user_matrix_0 = self.graph_learner(
-            self.student_emb, self.exercise_emb)
+            self.student_emb, self.exercise_emb, detach_choice)
         stu_emb, exer_emb = self.graph_representations(masked_user_item_matrix_1, masked_item_user_matrix_1, \
                                                        masked_user_item_matrix_0, masked_item_user_matrix_0)
         stu_emb_old, exer_emb_old = self.graph_representations(self.user_item_matrix_1, self.item_user_matrix_1, \
                                                                self.user_item_matrix_0, self.item_user_matrix_0)
         ib_loss = self.hsic_graph(stu_id, input_exercise, stu_emb_old, stu_emb, exer_emb_old, exer_emb) * self.beta
+
+        if pre_train:
+            stu_emb, exer_emb = stu_emb_old, exer_emb_old
 
         knowledge_base_emb = self.knowledge_emb.weight
         batch, dim = stu_emb.size()
