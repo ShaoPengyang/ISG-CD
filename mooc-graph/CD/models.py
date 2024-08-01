@@ -134,7 +134,7 @@ class our_adaptive(nn.Module):
         else:
             weights = mask_gate_input + (1-control)
         masked_user_item_matrix_1 = torch.sparse.FloatTensor(self.user_item_matrix_1._indices(),
-                                                             self.user_item_matrix_1._values() * weights)  # 矩阵的size，indices都没变，就改了矩阵的值。
+                                                             self.user_item_matrix_1._values() * weights)  
         masked_user_item_matrix_1 = masked_user_item_matrix_1.coalesce().cuda()
 
         item_ids,user_ids = self.item_user_matrix_1._indices()[0, :], self.item_user_matrix_1._indices()[1, :]
@@ -152,7 +152,7 @@ class our_adaptive(nn.Module):
         else:
             weights = mask_gate_input + (1-control)
         masked_item_user_matrix_1 = torch.sparse.FloatTensor(self.item_user_matrix_1._indices(),
-                                                             self.item_user_matrix_1._values() * weights)  # 矩阵的size，indices都没变，就改了矩阵的值。
+                                                             self.item_user_matrix_1._values() * weights)  
         masked_item_user_matrix_1 = masked_item_user_matrix_1.coalesce().cuda()
 
         user_ids, item_ids = self.user_item_matrix_0._indices()[0, :], self.user_item_matrix_0._indices()[1, :]
@@ -170,7 +170,7 @@ class our_adaptive(nn.Module):
         else:
             weights = mask_gate_input + (1-control)
         masked_user_item_matrix_0 = torch.sparse.FloatTensor(self.user_item_matrix_0._indices(),
-                                                             self.user_item_matrix_0._values() * weights)  # 矩阵的size，indices都没变，就改了矩阵的值。
+                                                             self.user_item_matrix_0._values() * weights)  
         masked_user_item_matrix_0 = masked_user_item_matrix_0.coalesce().cuda()
 
         item_ids, user_ids = self.item_user_matrix_0._indices()[0, :], self.item_user_matrix_0._indices()[1, :]
@@ -188,7 +188,7 @@ class our_adaptive(nn.Module):
         else:
             weights = mask_gate_input + (1-control)
         masked_item_user_matrix_0 = torch.sparse.FloatTensor(self.item_user_matrix_0._indices(),
-                                                             self.item_user_matrix_0._values() * weights)  # 矩阵的size，indices都没变，就改了矩阵的值。
+                                                             self.item_user_matrix_0._values() * weights) 
         masked_item_user_matrix_0 = masked_item_user_matrix_0.coalesce().cuda()
         return masked_user_item_matrix_1, masked_item_user_matrix_1, masked_user_item_matrix_0, masked_item_user_matrix_0
 
