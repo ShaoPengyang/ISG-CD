@@ -118,7 +118,7 @@ class our_adaptive(nn.Module):
     def graph_learner(self, user_emb, item_emb, detach_choice=False):
         # pdb.set_trace()
         temperature = 0.2
-        control = 0.3
+        control = 0.5
         user_ids, item_ids = self.user_item_matrix_1._indices()[0, :], self.user_item_matrix_1._indices()[1, :]
         row_emb = user_emb.weight[user_ids].detach()
         col_emb = item_emb.weight[item_ids].detach()
@@ -128,7 +128,7 @@ class our_adaptive(nn.Module):
         eps = torch.rand(logit.shape).cuda()
         mask_gate_input = torch.log(eps) - torch.log(1 - eps)
         mask_gate_input = (logit + mask_gate_input)  / temperature
-        mask_gate_input = control * torch.sigmoid(mask_gate_input)
+        mask_gate_input = torch.sigmoid(mask_gate_input)
         if detach_choice:
             weights = mask_gate_input.detach() + (1-control)
         else:
@@ -146,7 +146,7 @@ class our_adaptive(nn.Module):
         eps = torch.rand(logit.shape).cuda()
         mask_gate_input = torch.log(eps) - torch.log(1 - eps)
         mask_gate_input = (logit + mask_gate_input) / temperature
-        mask_gate_input = control * torch.sigmoid(mask_gate_input)
+        mask_gate_input =  torch.sigmoid(mask_gate_input)
         if detach_choice:
             weights = mask_gate_input.detach() + (1-control)
         else:
@@ -164,7 +164,7 @@ class our_adaptive(nn.Module):
         eps = torch.rand(logit.shape).cuda()
         mask_gate_input = torch.log(eps) - torch.log(1 - eps)
         mask_gate_input = (logit + mask_gate_input) / temperature
-        mask_gate_input = control * torch.sigmoid(mask_gate_input)
+        mask_gate_input =  torch.sigmoid(mask_gate_input)
         if detach_choice:
             weights = mask_gate_input.detach() + (1-control)
         else:
@@ -182,7 +182,7 @@ class our_adaptive(nn.Module):
         eps = torch.rand(logit.shape).cuda()
         mask_gate_input = torch.log(eps) - torch.log(1 - eps)
         mask_gate_input = (logit + mask_gate_input) / temperature
-        mask_gate_input = control * torch.sigmoid(mask_gate_input)
+        mask_gate_input = torch.sigmoid(mask_gate_input)
         if detach_choice:
             weights = mask_gate_input.detach() + (1-control)
         else:
