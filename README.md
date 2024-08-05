@@ -8,15 +8,16 @@ pandas 1.3.4
 scikit-learn 0.24.2
 networkx 2.6.3
 ```
+You can change the data path in data_loader.py
 #### ASSIST
 ```
 cd assist-graph/CD
-python main_our.py
+python main_our.py --gpu 0
 ```
 #### Junyi
 ```
 cd junyi-graph/CD
-python main_our.py
+python main_our.py --gpu 0
 ```
 #### Mooc-radar
 The MOOC-Radar is too big to upload via Github. 
@@ -25,5 +26,5 @@ Then, you should run
 ```
 cd mooc-graph/CD
 python divide_data.py
-python main_our.py
+python main_our.py --gpu 0
 ```
