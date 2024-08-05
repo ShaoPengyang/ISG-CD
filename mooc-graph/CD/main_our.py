@@ -4,7 +4,6 @@ import torch.optim as optim
 import numpy as np
 import os.path as osp
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 import networkx as nx
 import json
 import sys
@@ -138,4 +137,5 @@ def save_snapshot(model, filename):
 
 if __name__ == '__main__':
     args = CommonArgParser().parse_args()
+    os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpu)
     train(args)
