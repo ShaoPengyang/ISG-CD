@@ -36,32 +36,6 @@ class CommonArgParser(argparse.ArgumentParser):
                           help='The number for student.')
         self.add_argument('--gpu', type=int, default=0,
                           help='The id of gpu, e.g. 0.')
-        self.add_argument('--epoch_n', type=int, default=4,
-                          help='The epoch number of training')
-        self.add_argument('--lr', type=float, default=0.005,
-                          help='Learning rate')
-        self.add_argument('--test', action='store_true',
-                          help='Evaluate the model on the testing set in the training process.')
-        self.add_argument('--x_dims', type=int, default=1,  # changed here
-                            help='The number of input dimensions: default 1.')
-        self.add_argument('--z_dims', type=int, default=1,
-                            help='The number of latent variable dimensions: default the same as variable size.')
-        self.add_argument('--graph_threshold', type=float, default=0.3,  # 0.3 is good, 0.2 is error prune
-                            help='threshold for learned adjacency matrix binarization')
-        self.add_argument('--tau_A', type=float, default=0.0,
-                            help='coefficient for L-1 norm of A.')
-        self.add_argument('--lambda_A', type=float, default=0.,
-                            help='coefficient for DAG constraint h(A).')
-        self.add_argument('--c_A', type=float, default=1,
-                            help='coefficient for absolute value h(A).')
-        self.add_argument('--encoder-dropout', type=float, default=0.0,
-                            help='Dropout rate (1 - keep probability).')
-        self.add_argument('--decoder-dropout', type=float, default=0.0,
-                            help='Dropout rate (1 - keep probability).')
-        self.add_argument('--encoder-hidden', type=int, default=64,
-                            help='Number of hidden units.')
-        self.add_argument('--decoder-hidden', type=int, default=64,
-                            help='Number of hidden units.')
 
 # def construct_local_map(args):
 #     local_map = {
