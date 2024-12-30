@@ -1,4 +1,4 @@
-# This repo is for ``Exploring Heterogeneity and Uncertainty for Graph-based Cognitive Diagnosis Models in Intelligent Education''
+### This repo is for ``Exploring Heterogeneity and Uncertainty for Graph-based Cognitive Diagnosis Models in Intelligent Education''
 
 Our environment:
 ```
