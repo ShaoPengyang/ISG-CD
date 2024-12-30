@@ -1,4 +1,4 @@
-# This repo is for KDD submission Exploring Heterogeneity and Uncertainty for Graph-based Cognitive Diagnosis Models in Intelligent Education. 
+# This repo is for ``Exploring Heterogeneity and Uncertainty for Graph-based Cognitive Diagnosis Models in Intelligent Education''
 
 Our environment:
 ```
@@ -8,7 +8,10 @@ pandas 1.3.4
 scikit-learn 0.24.2
 networkx 2.6.3
 ```
-You can change the data path in data_loader.py
+
+
+
+Run the codes: 
 #### ASSIST
 ```
 cd assist-graph/CD
@@ -28,3 +31,5 @@ cd mooc-graph/CD
 python divide_data.py
 python main_our.py --gpu 0
 ```
+
+You can change the data path in data_loader.py
