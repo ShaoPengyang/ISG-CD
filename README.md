@@ -33,3 +33,16 @@ python main_our.py --gpu 0
 ```
 
 You can change the data path in data_loader.py
+
+```
+@inproceedings{10.1145/3690624.3709264,
+author = {Shao, Pengyang and Yang, Yonghui and Gao, Chen and Chen, Lei and Zhang, Kun and Zhuang, Chenyi and Wu, Le and Li, Yong and Wang, Meng},
+title = {Exploring Heterogeneity and Uncertainty for Graph-based Cognitive Diagnosis Models in Intelligent Education},
+year = {2025},
+publisher = {Association for Computing Machinery},
+booktitle = {Proceedings of the 31st ACM SIGKDD Conference on Knowledge Discovery and Data Mining V.1},
+pages = {1233–1243},
+numpages = {11}
+}
+```
+
